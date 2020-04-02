@@ -1,10 +1,12 @@
+package com.topjava.webapp.model;
+
 /**
  * Initial resume class
  */
 public class Resume {
 
     // Unique identifier
-    public String uuid;
+    private String uuid;
 
 
     public String getUuid() {
@@ -15,8 +17,8 @@ public class Resume {
         this.uuid = uuid;
     }
 
-    @Override
-    public String toString() {
-        return uuid;
-    }
+//    @Override
+//    public String toString() {
+//        return  uuid;
+//    }
 }

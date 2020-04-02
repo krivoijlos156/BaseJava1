@@ -3,6 +3,8 @@ package com.topjava.webapp.storage;
 import com.topjava.webapp.exception.NotFoundResumeException;
 import com.topjava.webapp.model.Resume;
 
+import java.util.Arrays;
+
 /**
  * Array based storage for Resumes
  */
@@ -26,9 +28,8 @@ public class ArrayStorage {
     }
 
     public void clear() {
-        for (int i = 0; i < size; i++) {
-            storage[i] = null;
-        }
+
+        Arrays.fill(storage, null);
         size = 0;
     }
 
@@ -77,11 +78,7 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        Resume[] resumes = new Resume[size];
-
-        for (int i = 0; i < size; i++) {
-            resumes[i] = storage[i];
-        }
+        Resume[] resumes = Arrays.copyOfRange(storage, 0, size);
         return resumes;
     }
 

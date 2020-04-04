@@ -11,9 +11,66 @@ import java.util.Arrays;
 public class ArrayStorage {
     private Resume[] storage = new Resume[10000];
     private int size = 0;
-    private String not = "Резюме не найдено в базе";
+    private String not = "Резюме не найдено в базе ";
 
-    public int searchI(String uuid) {
+    public void clear() {
+        Arrays.fill(storage,0,size, null);
+        size = 0;
+    }
+
+    public void update(Resume r) {
+        if (searchIndex(r.getUuid()) != -1) {
+            storage[searchIndex(r.getUuid())] = r;
+        } else {
+            System.out.println(not + r);
+        }
+    }
+
+    public void save(Resume r) {
+        if ((searchIndex(r.getUuid())) == -1) {
+            storage[size] = r;
+            size++;
+        } else if (size == 10000) {
+            System.out.println("База переполненна. Сначала удалите резюме.");
+        } else {
+            System.out.println(not +r+ " Возможно вы хотели обновить его? Тогда воспользуйтесь соответствующей командой.");
+        }
+
+    }
+
+    public Resume get(String uuid) {
+        if (searchIndex(uuid) != -1) {
+            return storage[searchIndex(uuid)];
+        } else {
+            System.out.println(not+uuid);
+            return null;
+        }
+    }
+
+    public void delete(String uuid) {
+        if (searchIndex(uuid) != -1) {
+            int index = searchIndex(uuid);
+            storage[index] = storage[size - 1];
+            storage[size - 1] = null;
+            size--;
+        } else {
+            System.out.println(not+uuid);
+        }
+
+    }
+
+    /**
+     * @return array, contains only Resumes in storage (without null)
+     */
+    public Resume[] getAll() {
+        return Arrays.copyOfRange(storage, 0, size);
+    }
+
+    public int size() {
+        return size;
+    }
+
+    private int searchIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
@@ -24,65 +81,6 @@ public class ArrayStorage {
 //        }catch (NotFoundResumeException e){
 //            System.out.println("Резюме не найдено в базе");
 //        }
-        return 11111;
-    }
-
-    public void clear() {
-
-        Arrays.fill(storage, null);
-        size = 0;
-    }
-
-    public void update(Resume r) {
-        if (searchI(r.getUuid()) != 11111) {
-            storage[searchI(r.getUuid())] = r;
-        } else {
-            System.out.println(not);
-        }
-    }
-
-    public void save(Resume r) {
-        if ((searchI(r.getUuid())) == 11111) {
-            storage[size] = r;
-            size++;
-        } else if (size == 10000) {
-            System.out.println("База переполненна. Сначала удалите резюме.");
-        } else {
-            System.out.println(not + " Возможно вы хотели обновить его? Тогда воспользуйтесь соответствующей комендой.");
-        }
-
-    }
-
-    public Resume get(String uuid) {
-        if (searchI(uuid) != 11111) {
-            return storage[searchI(uuid)];
-        } else {
-            System.out.println(not);
-            return null;
-        }
-    }
-
-    public void delete(String uuid) {
-        if (searchI(uuid) != 11111) {
-            int i = searchI(uuid);
-            storage[i] = storage[size - 1];
-            storage[size - 1] = null;
-            size--;
-        } else {
-            System.out.println(not);
-        }
-
-    }
-
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
-    public Resume[] getAll() {
-        Resume[] resumes = Arrays.copyOfRange(storage, 0, size);
-        return resumes;
-    }
-
-    public int size() {
-        return size;
+        return -1;
     }
 }

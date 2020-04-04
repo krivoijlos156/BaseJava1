@@ -1,3 +1,5 @@
+package com.topjava.webapp;
+
 import com.topjava.webapp.exception.NotFoundResumeException;
 import com.topjava.webapp.model.Resume;
 import com.topjava.webapp.storage.ArrayStorage;

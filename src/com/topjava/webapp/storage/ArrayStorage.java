@@ -9,54 +9,54 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+    private Resume[] storage = new Resume[10_000];
     private int size = 0;
-    private String not = "Резюме не найдено в базе ";
+    private String notFound = "Резюме не найдено в базе ";
 
     public void clear() {
-        Arrays.fill(storage,0,size, null);
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    public void update(Resume r) {
-        if (searchIndex(r.getUuid()) != -1) {
-            storage[searchIndex(r.getUuid())] = r;
+    public void update(Resume resume) {
+        int index = searchIndex(resume.getUuid());
+        if (index != -1) {
+            storage[index] = resume;
         } else {
-            System.out.println(not + r);
+            System.out.println(notFound + resume);
         }
     }
 
-    public void save(Resume r) {
-        if ((searchIndex(r.getUuid())) == -1) {
-            storage[size] = r;
-            size++;
-        } else if (size == 10000) {
+    public void save(Resume resume) {
+        if (size == storage.length) {
             System.out.println("База переполненна. Сначала удалите резюме.");
+        } else if ((searchIndex(resume.getUuid())) == -1) {
+            storage[size] = resume;
+            size++;
         } else {
-            System.out.println(not +r+ " Возможно вы хотели обновить его? Тогда воспользуйтесь соответствующей командой.");
+            System.out.println("Резюме с uuid: " + resume + " уже присутствует в базе." + " Возможно вы хотели обновить его? Тогда воспользуйтесь соответствующей командой.");
         }
-
     }
 
     public Resume get(String uuid) {
-        if (searchIndex(uuid) != -1) {
-            return storage[searchIndex(uuid)];
+        int index = searchIndex(uuid);
+        if (index != -1) {
+            return storage[index];
         } else {
-            System.out.println(not+uuid);
+            System.out.println(notFound + uuid);
             return null;
         }
     }
 
     public void delete(String uuid) {
-        if (searchIndex(uuid) != -1) {
-            int index = searchIndex(uuid);
+        int index = searchIndex(uuid);
+        if (index != -1) {
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
         } else {
-            System.out.println(not+uuid);
+            System.out.println(notFound + uuid);
         }
-
     }
 
     /**
@@ -76,11 +76,6 @@ public class ArrayStorage {
                 return i;
             }
         }
-//        try {
-//             throw new NotFoundResumeException("ERROR: not found resume");
-//        }catch (NotFoundResumeException e){
-//            System.out.println("Резюме не найдено в базе");
-//        }
         return -1;
     }
 }

@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class ArrayStorage {
     private Resume[] storage = new Resume[10_000];
     private int size = 0;
-    private static final String NOT_FOUND = " не найден в базе ";
+    //private static final String NOT_FOUND = "Резюме не найдено в базе ";
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);
@@ -22,7 +22,7 @@ public class ArrayStorage {
         if (index != -1) {
             storage[index] = resume;
         } else {
-            System.out.println(resume + NOT_FOUND);
+            System.out.printf("Резюме %s не найден в базе%n", resume.getUuid());
         }
     }
 
@@ -33,7 +33,7 @@ public class ArrayStorage {
             storage[size] = resume;
             size++;
         } else {
-            System.out.println(resume + " уже присутствует в базе." + " Возможно вы хотели обновить его? Тогда воспользуйтесь соответствующей командой.");
+            System.out.println("Резюме" + resume + " уже присутствует в базе." + " Возможно вы хотели обновить его? Тогда воспользуйтесь соответствующей командой.");
         }
     }
 
@@ -42,7 +42,7 @@ public class ArrayStorage {
         if (index != -1) {
             return storage[index];
         }
-        System.out.println(uuid + NOT_FOUND);
+        System.out.printf("Резюме %s не найден в базе%n", uuid);
         return null;
     }
 
@@ -53,7 +53,7 @@ public class ArrayStorage {
             storage[size - 1] = null;
             size--;
         } else {
-            System.out.println(uuid + NOT_FOUND);
+            System.out.printf("Резюме %s не найден в базе%n", uuid);
         }
     }
 

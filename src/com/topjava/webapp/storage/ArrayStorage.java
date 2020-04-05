@@ -1,6 +1,5 @@
 package com.topjava.webapp.storage;
 
-import com.topjava.webapp.exception.NotFoundResumeException;
 import com.topjava.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -11,7 +10,7 @@ import java.util.Arrays;
 public class ArrayStorage {
     private Resume[] storage = new Resume[10_000];
     private int size = 0;
-    private String notFound = "Резюме не найдено в базе ";
+    private static final String NOT_FOUND = " не найден в базе ";
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);
@@ -23,7 +22,7 @@ public class ArrayStorage {
         if (index != -1) {
             storage[index] = resume;
         } else {
-            System.out.println(notFound + resume);
+            System.out.println(resume + NOT_FOUND);
         }
     }
 
@@ -34,7 +33,7 @@ public class ArrayStorage {
             storage[size] = resume;
             size++;
         } else {
-            System.out.println("Резюме с uuid: " + resume + " уже присутствует в базе." + " Возможно вы хотели обновить его? Тогда воспользуйтесь соответствующей командой.");
+            System.out.println(resume + " уже присутствует в базе." + " Возможно вы хотели обновить его? Тогда воспользуйтесь соответствующей командой.");
         }
     }
 
@@ -42,10 +41,9 @@ public class ArrayStorage {
         int index = searchIndex(uuid);
         if (index != -1) {
             return storage[index];
-        } else {
-            System.out.println(notFound + uuid);
-            return null;
         }
+        System.out.println(uuid + NOT_FOUND);
+        return null;
     }
 
     public void delete(String uuid) {
@@ -55,7 +53,7 @@ public class ArrayStorage {
             storage[size - 1] = null;
             size--;
         } else {
-            System.out.println(notFound + uuid);
+            System.out.println(uuid + NOT_FOUND);
         }
     }
 

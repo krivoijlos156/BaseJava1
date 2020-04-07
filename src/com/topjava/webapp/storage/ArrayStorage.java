@@ -10,20 +10,6 @@ import java.util.Arrays;
 public class ArrayStorage extends AbstractArrayStorage {
 
 
-    public void clear() {
-        Arrays.fill(storage, 0, size, null);
-        size = 0;
-    }
-
-    public void update(Resume resume) {
-        int index = searchIndex(resume.getUuid());
-        if (index != -1) {
-            storage[index] = resume;
-        } else {
-            System.out.printf("Резюме %s не найден в базе%n", resume.getUuid());
-        }
-    }
-
     public void save(Resume resume) {
         if (size == storage.length) {
             System.out.println("База переполненна. Сначала удалите резюме.");
@@ -49,9 +35,6 @@ public class ArrayStorage extends AbstractArrayStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
-    }
 
     protected int searchIndex(String uuid) {
         for (int i = 0; i < size; i++) {

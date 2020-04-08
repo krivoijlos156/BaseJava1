@@ -4,9 +4,7 @@ import com.topjava.webapp.model.Resume;
 
 import java.util.Arrays;
 
-/**
- * Array based storage for Resumes
- */
+
 public abstract class AbstractArrayStorage implements Storage {
     protected static final int STORADE_LIMITED = 10000;
     protected Resume[] storage = new Resume[STORADE_LIMITED];
@@ -26,6 +24,19 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
+    public void save(Resume resume) {
+        if (size == storage.length) {
+            System.out.println("База переполненна. Сначала удалите резюме.");
+        } else if (searchIndex(resume.getUuid()) <= 0) {
+            saveIf(resume);
+            size++;
+        } else {
+            System.out.println("Резюме" + resume + " уже присутствует в базе." + " Возможно вы хотели обновить его? Тогда воспользуйтесь соответствующей командой.");
+        }
+    }
+
+    protected abstract void saveIf(Resume resume);
+
     public Resume get(String uuid) {
         int index = searchIndex(uuid);
         if (index != -1) {
@@ -34,6 +45,17 @@ public abstract class AbstractArrayStorage implements Storage {
         System.out.printf("Резюме %s не найден в базе%n", uuid);
         return null;
     }
+
+    public void delete(String uuid) {
+        if (searchIndex(uuid) >= 0) {
+            deleteIf(uuid);
+            size--;
+        } else {
+            System.out.printf("Резюме %s не найден в базе%n", uuid);
+        }
+    }
+
+    protected abstract void deleteIf(String uuid);
 
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);

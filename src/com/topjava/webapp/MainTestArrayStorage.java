@@ -6,9 +6,6 @@ import com.topjava.webapp.storage.ArrayStorage;
 import com.topjava.webapp.storage.SortedArrayStorage;
 import com.topjava.webapp.storage.Storage;
 
-/**
- * Test for your com.topjava.webapp.storage.ArrayStorage implementation
- */
 public class MainTestArrayStorage {
     static final Storage ARRAY_STORAGE = new SortedArrayStorage();
 

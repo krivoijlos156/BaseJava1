@@ -2,9 +2,6 @@ package com.topjava.webapp.model;
 
 import java.util.Objects;
 
-/**
- * Initial resume class
- */
 public class Resume implements Comparable<Resume> {
 
     // Unique identifier

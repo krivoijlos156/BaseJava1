@@ -6,8 +6,8 @@ import java.util.Arrays;
 
 
 public abstract class AbstractArrayStorage implements Storage {
-    protected static final int STORADE_LIMITED = 10000;
-    protected Resume[] storage = new Resume[STORADE_LIMITED];
+    protected static final int STORAGE_LIMITED = 10000;
+    protected Resume[] storage = new Resume[STORAGE_LIMITED];
     protected int size = 0;
 
     public void clear() {
@@ -25,9 +25,10 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public void save(Resume resume) {
+        int index = searchIndex(resume.getUuid());
         if (size == storage.length) {
             System.out.println("База переполненна. Сначала удалите резюме.");
-        } else if (searchIndex(resume.getUuid()) <= 0) {
+        } else if (index < 0) {
             saveIf(resume);
             size++;
         } else {
@@ -39,7 +40,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     public Resume get(String uuid) {
         int index = searchIndex(uuid);
-        if (index != -1) {
+        if (index >= 0) {
             return storage[index];
         }
         System.out.printf("Резюме %s не найден в базе%n", uuid);
@@ -47,15 +48,17 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public void delete(String uuid) {
-        if (searchIndex(uuid) >= 0) {
-            deleteIf(uuid);
+        int index = searchIndex(uuid);
+        if (index >= 0) {
+            deleteIf(index);
+            storage[size - 1] = null;
             size--;
         } else {
             System.out.printf("Резюме %s не найден в базе%n", uuid);
         }
     }
 
-    protected abstract void deleteIf(String uuid);
+    protected abstract void deleteIf(int index);
 
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);

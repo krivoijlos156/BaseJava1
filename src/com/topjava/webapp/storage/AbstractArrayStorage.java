@@ -1,5 +1,7 @@
 package com.topjava.webapp.storage;
 
+import com.topjava.webapp.exception.ExistStorageException;
+import com.topjava.webapp.exception.NotExistStorageException;
 import com.topjava.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -20,7 +22,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             storage[index] = resume;
         } else {
-            System.out.printf("Резюме %s не найден в базе%n", resume.getUuid());
+            throw new NotExistStorageException("Resume "+ resume.getUuid()+ " not exist.", resume.getUuid());
         }
     }
 
@@ -32,8 +34,7 @@ public abstract class AbstractArrayStorage implements Storage {
             saveToStorage(resume);
             size++;
         } else {
-            System.out.println("Резюме" + resume + " уже присутствует в базе." + " Возможно вы хотели обновить его? Тогда воспользуйтесь соответствующей командой.");
-        }
+            throw new ExistStorageException("Resume "+ resume.getUuid()+ " already exist.", resume.getUuid());        }
     }
 
     protected abstract void saveToStorage(Resume resume);
@@ -43,8 +44,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             return storage[index];
         }
-        System.out.printf("Резюме %s не найден в базе%n", uuid);
-        return null;
+        throw new NotExistStorageException("Resume "+ uuid+ " not exist.", uuid);
     }
 
     public void delete(String uuid) {
@@ -54,7 +54,7 @@ public abstract class AbstractArrayStorage implements Storage {
             storage[size - 1] = null;
             size--;
         } else {
-            System.out.printf("Резюме %s не найден в базе%n", uuid);
+            throw new NotExistStorageException("Resume "+ uuid+ " not exist.", uuid);
         }
     }
 

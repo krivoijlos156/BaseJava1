@@ -2,6 +2,7 @@ package com.topjava.webapp.storage;
 
 import com.topjava.webapp.exception.ExistStorageException;
 import com.topjava.webapp.exception.NotExistStorageException;
+import com.topjava.webapp.exception.StorageException;
 import com.topjava.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -22,19 +23,20 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             storage[index] = resume;
         } else {
-            throw new NotExistStorageException("Resume "+ resume.getUuid()+ " not exist.", resume.getUuid());
+            throw new NotExistStorageException("Resume " + resume.getUuid() + " not exist.", resume.getUuid());
         }
     }
 
     public void save(Resume resume) {
         int index = searchIndex(resume.getUuid());
         if (size == storage.length) {
-            System.out.println("База переполненна. Сначала удалите резюме.");
+            throw new StorageException("Resume "+ resume.getUuid()+ "limit is exceeded.", resume.getUuid());
         } else if (index < 0) {
             saveToStorage(resume);
             size++;
         } else {
-            throw new ExistStorageException("Resume "+ resume.getUuid()+ " already exist.", resume.getUuid());        }
+            throw new ExistStorageException("Resume " + resume.getUuid() + " already exist.", resume.getUuid());
+        }
     }
 
     protected abstract void saveToStorage(Resume resume);
@@ -44,7 +46,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             return storage[index];
         }
-        throw new NotExistStorageException("Resume "+ uuid+ " not exist.", uuid);
+        throw new NotExistStorageException("Resume " + uuid + " not exist.", uuid);
     }
 
     public void delete(String uuid) {
@@ -54,7 +56,7 @@ public abstract class AbstractArrayStorage implements Storage {
             storage[size - 1] = null;
             size--;
         } else {
-            throw new NotExistStorageException("Resume "+ uuid+ " not exist.", uuid);
+            throw new NotExistStorageException("Resume " + uuid + " not exist.", uuid);
         }
     }
 

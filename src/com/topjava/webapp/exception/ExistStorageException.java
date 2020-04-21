@@ -2,7 +2,8 @@ package com.topjava.webapp.exception;
 
 public class ExistStorageException extends StorageException {
 
-    public ExistStorageException(String massage, String uuid) {
+    public ExistStorageException( String uuid) {
         super("Resume "+ uuid+ " already exist.", uuid);
     }
+
 }

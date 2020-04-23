@@ -8,16 +8,18 @@ import com.topjava.webapp.model.Resume;
 import java.util.Arrays;
 
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMITED = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMITED];
     protected int size = 0;
 
+    @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
+    @Override
     public void update(Resume resume) {
         int index = searchIndex(resume.getUuid());
         if (index >= 0) {
@@ -27,10 +29,11 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
+    @Override
     public void save(Resume resume) {
         int index = searchIndex(resume.getUuid());
         if (size == storage.length) {
-            throw new StorageException("Resume "+ resume.getUuid()+ "limit is exceeded.", resume.getUuid());
+            throw new StorageException("Resume " + resume.getUuid() + "limit is exceeded.", resume.getUuid());
         } else if (index < 0) {
             saveToStorage(resume);
             size++;
@@ -39,8 +42,7 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
-    protected abstract void saveToStorage(Resume resume);
-
+    @Override
     public Resume get(String uuid) {
         int index = searchIndex(uuid);
         if (index >= 0) {
@@ -49,6 +51,7 @@ public abstract class AbstractArrayStorage implements Storage {
         throw new NotExistStorageException(uuid);
     }
 
+    @Override
     public void delete(String uuid) {
         int index = searchIndex(uuid);
         if (index >= 0) {
@@ -60,15 +63,31 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
-    protected abstract void deleteItem(int index);
-
+    @Override
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);
     }
 
-    protected abstract int searchIndex(String uuid);
 
+    @Override
     public int size() {
         return size;
+    }
+
+    protected abstract void deleteItem(int index);
+
+    protected abstract void saveToStorage(Resume resume);
+
+    protected abstract int searchIndex(String uuid);
+
+
+    @Override
+    protected void updateToCollection(Resume resume, int index) {
+        throw new StorageException("It`s storage", "-");
+    }
+
+    @Override
+    protected boolean isSaveToCollection(Resume resume) {
+        throw new StorageException("It`s storage", "-");
     }
 }

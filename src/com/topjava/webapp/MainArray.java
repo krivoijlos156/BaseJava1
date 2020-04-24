@@ -1,6 +1,7 @@
 package com.topjava.webapp;
 
 import com.topjava.webapp.model.Resume;
+import com.topjava.webapp.storage.AbstractArrayStorage;
 import com.topjava.webapp.storage.ArrayStorage;
 import com.topjava.webapp.storage.SortedArrayStorage;
 import com.topjava.webapp.storage.Storage;
@@ -11,7 +12,7 @@ import java.io.InputStreamReader;
 
 
 public class MainArray {
-    private final static Storage ARRAY_STORAGE = new ArrayStorage();
+    private final static AbstractArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

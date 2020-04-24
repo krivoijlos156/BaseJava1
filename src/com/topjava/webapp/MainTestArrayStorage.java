@@ -1,11 +1,12 @@
 package com.topjava.webapp;
 
 import com.topjava.webapp.model.Resume;
+import com.topjava.webapp.storage.AbstractArrayStorage;
 import com.topjava.webapp.storage.SortedArrayStorage;
 import com.topjava.webapp.storage.Storage;
 
 public class MainTestArrayStorage {
-    static final Storage ARRAY_STORAGE = new SortedArrayStorage();
+    static final AbstractArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume("uuid1");

@@ -3,7 +3,6 @@ package com.topjava.webapp.storage;
 
 import com.topjava.webapp.exception.StorageException;
 import com.topjava.webapp.model.Resume;
-
 import java.util.Arrays;
 
 
@@ -23,15 +22,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void save(Resume resume) {
-        int index = searchIndex(resume.getUuid());
-        if (size == storage.length) {
-            throw new StorageException("Resume " + resume.getUuid() + "limit is exceeded.", resume.getUuid());
-        }
-        super.save(resume);
-    }
-
-    @Override
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);
     }
@@ -43,7 +33,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected  Resume getResumeTo(int index){
+    protected Resume getResume(int index) {
         return storage[index];
     }
 
@@ -54,16 +44,18 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size--;
     }
 
-    protected abstract void deleteItem(int index);
-
-    protected abstract void saveToStorage(Resume resume);
-
-    protected abstract int searchIndex(String uuid);
-
-
     @Override
-    protected void saveToCollection(Resume resume) {
-        saveToStorage(resume);
+    protected void saveToStorage(Resume resume) {
+        if (size == storage.length) {
+            throw new StorageException("Resume " + resume.getUuid() + "limit is exceeded.", resume.getUuid());
+        }
+        saveAs(resume);
         size++;
     }
+
+    protected abstract void deleteItem(int index);
+
+    protected abstract void saveAs(Resume resume);
+
+    protected abstract int searchIndex(String uuid);
 }

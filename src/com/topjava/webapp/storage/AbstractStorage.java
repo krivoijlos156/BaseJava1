@@ -5,7 +5,6 @@ import com.topjava.webapp.exception.NotExistStorageException;
 import com.topjava.webapp.model.Resume;
 
 
-
 public abstract class AbstractStorage implements Storage {
 
 
@@ -23,7 +22,7 @@ public abstract class AbstractStorage implements Storage {
     public void save(Resume resume) {
         int index = searchIndex(resume.getUuid());
         if (index < 0) {
-            saveToCollection(resume);
+            saveToStorage(resume);
         } else {
             throw new ExistStorageException(resume.getUuid());
         }
@@ -33,7 +32,7 @@ public abstract class AbstractStorage implements Storage {
     public Resume get(String uuid) {
         int index = searchIndex(uuid);
         if (index >= 0) {
-            return getResumeTo(index);
+            return getResume(index);
         }
         throw new NotExistStorageException(uuid);
     }
@@ -53,9 +52,9 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void updateToStorage(Resume resume, int index);
 
-    protected abstract void saveToCollection(Resume resume);
+    protected abstract void saveToStorage(Resume resume);
 
-    protected abstract Resume getResumeTo(int index);
+    protected abstract Resume getResume(int index);
 
     protected abstract void deleteFromStorage(int index);
 }

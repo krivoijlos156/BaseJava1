@@ -2,11 +2,12 @@ package com.topjava.webapp;
 
 import com.topjava.webapp.model.Resume;
 import com.topjava.webapp.storage.ListStorage;
+import com.topjava.webapp.storage.MapStorage;
 import com.topjava.webapp.storage.Storage;
 
 
 public class MainCollection {
-    private static final Storage COLLECTION = new ListStorage();
+    private static final Storage COLLECTION = new MapStorage();
     private static final Resume r1 = new Resume("uuid1");
     private static final Resume r2 = new Resume("uuid2");
     private static final Resume r3 = new Resume("uuid3");

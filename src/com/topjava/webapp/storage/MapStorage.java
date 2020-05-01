@@ -5,7 +5,7 @@ import com.topjava.webapp.model.Resume;
 import java.util.*;
 
 public class MapStorage extends AbstractStorage {
-    private static Map<Integer, Resume> mapStorage = new HashMap<>();
+    private Map<Integer, Resume> mapStorage = new HashMap<>();
     private static int count = 0;
 
     @Override

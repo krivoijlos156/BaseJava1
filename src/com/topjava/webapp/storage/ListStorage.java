@@ -6,11 +6,11 @@ import java.util.List;
 
 
 public class ListStorage extends AbstractStorage {
-    private static List<Resume> listStorage = new ArrayList<>();
+    private  List<Resume> listStorage = new ArrayList<>();
 
     @Override
     public void clear() {
-        ListStorage.listStorage.clear();
+        listStorage.clear();
     }
 
     @Override
@@ -25,12 +25,12 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected Resume getResume(int index) {
-        return ListStorage.listStorage.get(index);
+        return listStorage.get(index);
     }
 
     @Override
     protected void deleteFromStorage(int index) {
-        ListStorage.listStorage.remove(index);
+        listStorage.remove(index);
     }
 
     @Override

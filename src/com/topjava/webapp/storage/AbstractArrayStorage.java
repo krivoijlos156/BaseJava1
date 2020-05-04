@@ -4,6 +4,7 @@ package com.topjava.webapp.storage;
 import com.topjava.webapp.exception.StorageException;
 import com.topjava.webapp.model.Resume;
 import java.util.Arrays;
+import java.util.List;
 
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
@@ -13,6 +14,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     public int size() {
         return size;
+    }
+
+    @Override
+    protected boolean isExist(Object index) {
+        return (int) index >= 0;
     }
 
     @Override
@@ -26,36 +32,41 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return Arrays.copyOfRange(storage, 0, size);
     }
 
+    @Override
+    public List<Resume> getAllSorted() {
+        return Arrays.asList(storage);
+    }
+
 
     @Override
-    protected void updateToStorage(Resume resume, int index) {
-        storage[index] = resume;
+    protected void doUpdate(Resume resume, Object index) {
+        storage[(int)index] = resume;
     }
 
     @Override
-    protected Resume getResume(int index) {
-        return storage[index];
+    protected Resume getResume(Object index) {
+        return storage[(int)index];
     }
 
     @Override
-    protected void deleteFromStorage(int index) {
-        deleteItem(index);
+    protected void doDelete(Object index) {
+        deleteItem((int)index);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    protected void saveToStorage(Resume resume) {
+    protected void doSave(Resume resume, Object index) {
         if (size == storage.length) {
             throw new StorageException("Resume " + resume.getUuid() + "limit is exceeded.", resume.getUuid());
         }
-        saveAs(resume);
+        saveAs(resume, (int)index);
         size++;
     }
 
     protected abstract void deleteItem(int index);
 
-    protected abstract void saveAs(Resume resume);
+    protected abstract void saveAs(Resume resume, int index);
 
-    protected abstract int searchIndex(String uuid);
+    protected abstract Integer getSearchKey(String uuid);
 }

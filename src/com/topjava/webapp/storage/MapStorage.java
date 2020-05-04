@@ -9,7 +9,7 @@ public class MapStorage extends AbstractStorage {
     private static int count = 0;
 
     @Override
-    protected int searchIndex(String uuid) {
+    protected Object getSearchKey(String uuid) {
         for (Map.Entry<Integer, Resume> pair : mapStorage.entrySet()) {
             if (pair.getValue().getUuid().equals(uuid)) {
                 return pair.getKey();
@@ -19,24 +19,29 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateToStorage(Resume resume, int index) {
-        mapStorage.put(index, resume);
+    protected boolean isExist(Object index) {
+        return (int) index >= 0;
     }
 
     @Override
-    protected void saveToStorage(Resume resume) {
+    protected void doUpdate(Resume resume, Object index) {
+        mapStorage.put((int)index, resume);
+    }
+
+    @Override
+    protected void doSave(Resume resume, Object index) {
         mapStorage.put(count, resume);
         count++;
     }
 
     @Override
-    protected Resume getResume(int index) {
-        return mapStorage.get(index);
+    protected Resume getResume(Object index) {
+        return mapStorage.get((int)index);
     }
 
     @Override
-    protected void deleteFromStorage(int index) {
-        mapStorage.remove(index);
+    protected void doDelete(Object index) {
+        mapStorage.remove((int)index);
     }
 
     @Override
@@ -47,7 +52,12 @@ public class MapStorage extends AbstractStorage {
     @Override
     public Resume[] getAll() {
         Collection<Resume> list = mapStorage.values();
-        return list.toArray(new Resume[list.size()]);
+        return list.toArray(new Resume[0]);
+    }
+
+    @Override
+    public List<Resume> getAllSorted() {
+        return (List<Resume>)mapStorage.values();
     }
 
     @Override

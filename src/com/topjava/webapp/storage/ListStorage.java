@@ -1,12 +1,13 @@
 package com.topjava.webapp.storage;
 
 import com.topjava.webapp.model.Resume;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class ListStorage extends AbstractStorage {
-    private  List<Resume> listStorage = new ArrayList<>();
+    private List<Resume> listStorage = new ArrayList<>();
 
     @Override
     public void clear() {
@@ -14,23 +15,28 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateToStorage(Resume resume, int index) {
-        listStorage.set(index, resume);
+    protected void doUpdate(Resume resume, Object index) {
+        listStorage.set((int) index, resume);
     }
 
     @Override
-    protected void saveToStorage(Resume resume) {
+    protected void doSave(Resume resume, Object index) {
         listStorage.add(resume);
     }
 
     @Override
-    protected Resume getResume(int index) {
-        return listStorage.get(index);
+    protected Resume getResume(Object index) {
+        return listStorage.get((int)index);
     }
 
     @Override
-    protected void deleteFromStorage(int index) {
-        listStorage.remove(index);
+    protected void doDelete(Object index) {
+        listStorage.remove((int)index);
+    }
+
+    @Override
+    protected boolean isExist(Object index) {
+        return (int) index >= 0;
     }
 
     @Override
@@ -39,7 +45,14 @@ public class ListStorage extends AbstractStorage {
     }
 
 
-    protected int searchIndex(String uuid) {
+    @Override
+    public List<Resume> getAllSorted() {
+        return listStorage;
+    }
+
+
+
+    protected Object getSearchKey(String uuid) {
         for (int i = 0; i < listStorage.size(); i++) {
             if (listStorage.get(i).getUuid().equals(uuid)) return i;
         }

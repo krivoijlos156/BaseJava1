@@ -1,0 +1,8 @@
+package com.topjava.webapp.storage;
+
+public class UuidMapStorageTest extends AbstractStorageTest {
+
+    public UuidMapStorageTest() {
+        super(new MapStorage());
+    }
+}

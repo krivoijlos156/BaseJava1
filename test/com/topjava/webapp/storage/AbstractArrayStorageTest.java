@@ -20,7 +20,8 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
         for (int i = 5; i <= 10_000; i++) {
             storage.save(new Resume("uuid" + i));
         }
-        storage.save(new Resume("uuid10_001"));
+        Resume re = new Resume("uuid10_001");
+        storage.save(re);
         Assert.fail("More then limited");
     }
 }

@@ -3,11 +3,12 @@ package com.topjava.webapp.storage;
 import com.topjava.webapp.model.Resume;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
 public class ListStorage extends AbstractStorage {
-    private List<Resume> listStorage = new ArrayList<>();
+    private final List<Resume> listStorage = new ArrayList<>();
 
     @Override
     public void clear() {
@@ -26,12 +27,12 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected Resume getResume(Object index) {
-        return listStorage.get((int)index);
+        return listStorage.get((int) index);
     }
 
     @Override
     protected void doDelete(Object index) {
-        listStorage.remove((int)index);
+        listStorage.remove((int) index);
     }
 
     @Override
@@ -40,16 +41,10 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return listStorage.toArray(new Resume[listStorage.size()]);
-    }
-
-
-    @Override
     public List<Resume> getAllSorted() {
+        Collections.sort(listStorage);
         return listStorage;
     }
-
 
 
     protected Object getSearchKey(String uuid) {

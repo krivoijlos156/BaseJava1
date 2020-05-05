@@ -3,7 +3,9 @@ package com.topjava.webapp.storage;
 
 import com.topjava.webapp.exception.StorageException;
 import com.topjava.webapp.model.Resume;
+
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -28,29 +30,25 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
-    }
-
-    @Override
     public List<Resume> getAllSorted() {
-        return Arrays.asList(storage);
+        List<Resume> list = Arrays.asList(Arrays.copyOfRange(storage, 0, size));
+        Collections.sort(list);
+        return list;
     }
-
 
     @Override
     protected void doUpdate(Resume resume, Object index) {
-        storage[(int)index] = resume;
+        storage[(int) index] = resume;
     }
 
     @Override
     protected Resume getResume(Object index) {
-        return storage[(int)index];
+        return storage[(int) index];
     }
 
     @Override
     protected void doDelete(Object index) {
-        deleteItem((int)index);
+        deleteItem((int) index);
         storage[size - 1] = null;
         size--;
     }
@@ -60,7 +58,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         if (size == storage.length) {
             throw new StorageException("Resume " + resume.getUuid() + "limit is exceeded.", resume.getUuid());
         }
-        saveAs(resume, (int)index);
+        saveAs(resume, (int) index);
         size++;
     }
 

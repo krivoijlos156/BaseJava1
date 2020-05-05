@@ -5,7 +5,7 @@ import com.topjava.webapp.model.Resume;
 import java.util.*;
 
 public class MapStorage extends AbstractStorage {
-    private Map<Integer, Resume> mapStorage = new HashMap<>();
+    private final Map<Integer, Resume> mapStorage = new HashMap<>();
     private static int count = 0;
 
     @Override
@@ -25,7 +25,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void doUpdate(Resume resume, Object index) {
-        mapStorage.put((int)index, resume);
+        mapStorage.put((int) index, resume);
     }
 
     @Override
@@ -36,12 +36,12 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected Resume getResume(Object index) {
-        return mapStorage.get((int)index);
+        return mapStorage.get((int) index);
     }
 
     @Override
     protected void doDelete(Object index) {
-        mapStorage.remove((int)index);
+        mapStorage.remove((int) index);
     }
 
     @Override
@@ -50,14 +50,10 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        Collection<Resume> list = mapStorage.values();
-        return list.toArray(new Resume[0]);
-    }
-
-    @Override
     public List<Resume> getAllSorted() {
-        return (List<Resume>)mapStorage.values();
+        List<Resume> list = new ArrayList<>(mapStorage.values());
+        Collections.sort(list);
+        return list;
     }
 
     @Override

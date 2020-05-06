@@ -35,7 +35,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getResume(Object index) {
+    protected Resume doGet(Object index) {
         return mapStorage.get((int) index);
     }
 
@@ -50,10 +50,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> list = new ArrayList<>(mapStorage.values());
-        Collections.sort(list);
-        return list;
+    protected List<Resume> getList() {
+        return new ArrayList<>(mapStorage.values());
     }
 
     @Override

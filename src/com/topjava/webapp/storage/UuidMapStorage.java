@@ -10,7 +10,7 @@ public class UuidMapStorage extends AbstractStorage {
 
     @Override
     protected Object getSearchKey(String uuid) {
-            return uuid;
+        return uuid;
     }
 
     @Override
@@ -24,8 +24,8 @@ public class UuidMapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getResume(Object uuid) {
-        Resume resume=new Resume();
+    protected Resume doGet(Object uuid) {
+        Resume resume = new Resume();
         return mapStorage.getOrDefault((String) uuid, resume);
     }
 
@@ -45,10 +45,8 @@ public class UuidMapStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> list = new ArrayList<>(mapStorage.values());
-        Collections.sort(list);
-        return list;
+    protected List<Resume> getList() {
+        return new ArrayList<>(mapStorage.values());
     }
 
     @Override

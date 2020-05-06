@@ -25,8 +25,7 @@ public class UuidMapStorage extends AbstractStorage {
 
     @Override
     protected Resume doGet(Object uuid) {
-        Resume resume = new Resume();
-        return mapStorage.getOrDefault((String) uuid, resume);
+        return mapStorage.get((String) uuid);
     }
 
     @Override

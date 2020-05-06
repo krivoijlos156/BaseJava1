@@ -4,7 +4,6 @@ import com.topjava.webapp.model.Resume;
 import com.topjava.webapp.storage.AbstractArrayStorage;
 import com.topjava.webapp.storage.ArrayStorage;
 import com.topjava.webapp.storage.SortedArrayStorage;
-import com.topjava.webapp.storage.Storage;
 
 import java.io.BufferedReader;
 import java.io.IOException;

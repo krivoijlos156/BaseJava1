@@ -4,7 +4,6 @@ import com.topjava.webapp.exception.ExistStorageException;
 import com.topjava.webapp.exception.NotExistStorageException;
 import com.topjava.webapp.model.Resume;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,14 +22,14 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract boolean isExist(Object searchKey);
 
+    protected abstract List<Resume> getList();
+
     @Override
     public List<Resume> getAllSorted() {
         List<Resume> list = getList();
         Collections.sort(list);
         return list;
     }
-
-    protected abstract List<Resume> getList();
 
     @Override
     public void update(Resume resume) {

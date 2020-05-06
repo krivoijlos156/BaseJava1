@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
-    private final Storage storage;
+    protected final Storage storage;
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -61,7 +61,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() {
-        Resume resume = new Resume("uuid1");
+        Resume resume = new Resume("uuid1", "null");
         assertEquals(resume, storage.get("uuid1"));
     }
 

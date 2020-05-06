@@ -5,43 +5,41 @@ import com.topjava.webapp.model.Resume;
 import java.util.*;
 
 public class MapStorage extends AbstractStorage {
-    private final Map<Integer, Resume> mapStorage = new HashMap<>();
-    private static int count = 0;
+    private final Map<String, Resume> mapStorage = new HashMap<>();
 
     @Override
     protected Object getSearchKey(String uuid) {
-        for (Map.Entry<Integer, Resume> pair : mapStorage.entrySet()) {
-            if (pair.getValue().getUuid().equals(uuid)) {
-                return pair.getKey();
+        for (Map.Entry<String, Resume> pair : mapStorage.entrySet()) {
+            if (pair.getKey().equals(uuid)) {
+                return pair.getValue();
             }
         }
-        return -1;
+        return uuid;
     }
 
     @Override
-    protected boolean isExist(Object index) {
-        return (int) index >= 0;
+    protected boolean isExist(Object searchKey) {
+        return searchKey.getClass().equals(Resume.class);
     }
 
     @Override
-    protected void doUpdate(Resume resume, Object index) {
-        mapStorage.put((int) index, resume);
+    protected void doUpdate(Resume resume, Object searchKey) {
+        mapStorage.put(((Resume) searchKey).getUuid(), resume);
     }
 
     @Override
-    protected void doSave(Resume resume, Object index) {
-        mapStorage.put(count, resume);
-        count++;
+    protected void doSave(Resume resume, Object searchKey) {
+        mapStorage.put((String) searchKey, resume);
     }
 
     @Override
-    protected Resume doGet(Object index) {
-        return mapStorage.get((int) index);
+    protected Resume doGet(Object searchKey) {
+        return (Resume) searchKey;
     }
 
     @Override
-    protected void doDelete(Object index) {
-        mapStorage.remove((int) index);
+    protected void doDelete(Object searchKey) {
+        mapStorage.remove(((Resume) searchKey).getUuid());
     }
 
     @Override

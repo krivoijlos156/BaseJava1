@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static final int STORAGE_LIMITED = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMITED];
     protected int size = 0;
@@ -19,8 +19,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object index) {
-        return (int) index >= 0;
+    protected boolean isExist(Integer index) {
+        return  index >= 0;
     }
 
     @Override
@@ -35,28 +35,28 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doUpdate(Resume resume, Object index) {
-        storage[(int) index] = resume;
+    protected void doUpdate(Resume resume, Integer index) {
+        storage[ index] = resume;
     }
 
     @Override
-    protected Resume doGet(Object index) {
-        return storage[(int) index];
+    protected Resume doGet(Integer index) {
+        return storage[index];
     }
 
     @Override
-    protected void doDelete(Object index) {
-        deleteItem((int) index);
+    protected void doDelete(Integer index) {
+        deleteItem( index);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    protected void doSave(Resume resume, Object index) {
+    protected void doSave(Resume resume, Integer index) {
         if (size == storage.length) {
             throw new StorageException("Resume " + resume.getUuid() + "limit is exceeded.", resume.getUuid());
         }
-        saveItem(resume, (int) index);
+        saveItem(resume,  index);
         size++;
     }
 

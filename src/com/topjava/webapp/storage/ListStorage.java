@@ -42,7 +42,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected List<Resume> getList() {
-        return listStorage;
+        return new ArrayList<>(listStorage);
     }
 
     protected Object getSearchKey(String uuid) {

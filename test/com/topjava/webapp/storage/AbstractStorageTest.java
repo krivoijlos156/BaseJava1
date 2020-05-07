@@ -34,7 +34,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume resume = new Resume("uuid2","Name9");
+        Resume resume = new Resume("uuid2", "Name9");
         storage.update(resume);
         assertTrue(resume == storage.get("uuid2"));
     }
@@ -61,7 +61,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() {
-        Resume resume = new Resume("uuid1", "null");
+        Resume resume = new Resume("uuid1", "Name1");
         assertEquals(resume, storage.get("uuid1"));
     }
 

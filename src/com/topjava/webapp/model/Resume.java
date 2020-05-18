@@ -1,12 +1,13 @@
 package com.topjava.webapp.model;
 
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class Resume implements Comparable<Resume> {
 
     private final String uuid;
     private final String fullName;
+    private final Map<SectionType, List<Element>> sections = new HashMap<>();
+    private final Map<ContactType, String> contacts = new HashMap<>();
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -51,4 +52,21 @@ public class Resume implements Comparable<Resume> {
         int result = fullName.compareTo(o.fullName);
         return result != 0 ? result : uuid.compareTo(o.uuid);
     }
+
+    public List<Element> getSection(SectionType type){
+        return sections.get(type);
+    }
+
+    public void setSection(SectionType type, List<Element> values){
+        sections.put(type, values);
+    }
+
+    public String getContact(ContactType type){
+        return contacts.get(type);
+    }
+
+    public void setContact(ContactType type,String value){
+        contacts.put(type,value);
+    }
+
 }

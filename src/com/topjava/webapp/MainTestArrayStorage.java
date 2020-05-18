@@ -1,10 +1,13 @@
 package com.topjava.webapp;
 
+import com.topjava.webapp.model.Element;
 import com.topjava.webapp.model.Resume;
+import com.topjava.webapp.model.SectionType;
 import com.topjava.webapp.storage.AbstractArrayStorage;
-import com.topjava.webapp.storage.ArrayStorage;
 import com.topjava.webapp.storage.SortedArrayStorage;
-import com.topjava.webapp.storage.Storage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainTestArrayStorage {
     static final AbstractArrayStorage ARRAY_STORAGE = new SortedArrayStorage();
@@ -14,6 +17,13 @@ public class MainTestArrayStorage {
         Resume r2 = new Resume("uuid2", "Name2");
         Resume r3 = new Resume("uuid3", "Name3");
         Resume r4 = new Resume("uuid1", "Name4");
+        List<Element> list = new ArrayList<>();
+        list.add(new Element("ad"));
+        list.add(new Element("adw"));
+        list.add(new Element("ad2"));
+
+        r1.setSection(SectionType.PERSONAL, list);
+        List<Element> section = r1.getSection(SectionType.PERSONAL);
 
 
         ARRAY_STORAGE.save(r1);

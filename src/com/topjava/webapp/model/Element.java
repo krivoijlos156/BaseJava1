@@ -1,8 +1,8 @@
 package com.topjava.webapp.model;
 
 public class Element {
-    String title;
-    String description;
+    protected String title;
+    protected String description;
 
     public Element(String title) {
         this.title = title;
@@ -14,6 +14,14 @@ public class Element {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        if (description == null) {
+            return title;
+        }
+        return title + ", " + '\n' + description;
     }
 }
 

@@ -3,6 +3,7 @@ package com.topjava.webapp;
 import com.topjava.webapp.model.*;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Map;
 
 import static com.topjava.webapp.model.ContactType.*;
 import static com.topjava.webapp.model.SectionType.*;
+import static com.topjava.webapp.util.DateUtil.of;
 
 public class ResumeTestData {
     public static void main(String[] args) {
@@ -34,40 +36,40 @@ public class ResumeTestData {
         experienceContentList.add("Java Online Projects");
         experienceContentList.add("http://javaops.ru/");
         experienceContentList.add("Автор проекта. Создание, организация и проведение Java онлайн проектов и стажировок.");
-        experienceDataList.add(LocalDate.of(2013, 10, 1));
+        experienceDataList.add(of(2013, Month.OCTOBER));
         experienceDataList.add(LocalDate.now());
 
         experienceContentList.add("Wrik");
         experienceContentList.add("https://www.wrike.com/");
         experienceContentList.add("Старший разработчик (backend). Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.");
-        experienceDataList.add(LocalDate.of(2014, 10, 1));
-        experienceDataList.add(LocalDate.of(2016, 1, 1));
+        experienceDataList.add(of(2014, Month.OCTOBER));
+        experienceDataList.add(of(2016, Month.JANUARY));
 
         experienceContentList.add("RIT Center");
         experienceContentList.add(null);
         experienceContentList.add("Java архитектор. Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python");
-        experienceDataList.add(LocalDate.of(2012, 4, 1));
-        experienceDataList.add(LocalDate.of(2014, 10, 1));
+        experienceDataList.add(of(2012, Month.APRIL));
+        experienceDataList.add(of(2014, Month.OCTOBER));
 
         List<String> educationContentList = new ArrayList<>();
         List<LocalDate> educationDataList = new ArrayList<>();
         educationContentList.add("Coursera");
         educationContentList.add("https://www.coursera.org/course/progfun");
         educationContentList.add("Functional Programming Principles in Scala\" by Martin Odersky");
-        educationDataList.add(LocalDate.of(2013, 3, 1));
-        educationDataList.add(LocalDate.of(2013, 5, 1));
+        educationDataList.add(of(2013, Month.MARCH));
+        educationDataList.add(of(2013, Month.MAY));
 
         educationContentList.add("Luxoft");
         educationContentList.add("http://www.luxoft-training.ru/training/catalog/course.html?ID=22366");
         educationContentList.add("Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"");
-        educationDataList.add(LocalDate.of(2011, 3, 1));
-        educationDataList.add(LocalDate.of(2011, 4, 1));
+        educationDataList.add(of(2011, Month.NOVEMBER));
+        educationDataList.add(of(2011, Month.APRIL));
 
         educationContentList.add("Siemens AG");
         educationContentList.add("http://www.siemens.ru/");
         educationContentList.add("3 месяца обучения мобильным IN сетям (Берлин)");
-        educationDataList.add(LocalDate.of(2015, 1, 1));
-        educationDataList.add(LocalDate.of(2015, 4, 1));
+        educationDataList.add(of(2015, Month.JANUARY));
+        educationDataList.add(of(2015, Month.APRIL));
 
 
         Resume r1 = new Resume("uuid1", "Name1");
@@ -100,25 +102,6 @@ public class ResumeTestData {
         printContentResume(r1);
     }
 
-    private static void printContentResume(Resume r) {
-        EnumMap<SectionType, List<Element>> map = r.sections;
-        for (Map.Entry<SectionType, List<Element>> entry : map.entrySet()) {
-            System.out.println(entry.getKey());
-            for (Element element : entry.getValue()) {
-                System.out.println(element);
-            }
-            System.out.println("");
-        }
-    }
-
-    private static void printContactResume(Resume r) {
-        EnumMap<ContactType, String> map = r.contacts;
-        for (Map.Entry<ContactType, String> entry : map.entrySet()) {
-            System.out.println(entry);
-        }
-        System.out.println("" + '\n');
-    }
-
     private static List<Element> createListElements(String content) {
         List<Element> list = new ArrayList<>();
         list.add(new Element(content));
@@ -140,7 +123,31 @@ public class ResumeTestData {
             element.setLink(listContent.get(i + 1));
             element.setDescription(listContent.get(i + 2));
             list.add(element);
+            if (listContent.get(i + 3).startsWith("2")){
+                DateElement element2 = new DateElement(null, dateList.get(j+2), dateList.get(j + 3));
+                element2.setDescription(listContent.get(i + 3).substring(2));
+                list.add(element2);
+                i++;j=j+2;
+            }
         }
         return list;
+    }
+
+
+    private static void printContentResume(Resume r) {
+        for (Map.Entry<SectionType, List<Element>> entry : r.sections.entrySet()) {
+            System.out.println(entry.getKey());
+            for (Element element : entry.getValue()) {
+                System.out.println(element);
+            }
+            System.out.println("");
+        }
+    }
+
+    private static void printContactResume(Resume r) {
+        for (Map.Entry<ContactType, String> entry : r.contacts.entrySet()) {
+            System.out.println(entry);
+        }
+        System.out.println("" + '\n');
     }
 }

@@ -8,7 +8,7 @@ public enum ContactType {
     GITHUB("Профиль GitHub"),
     STACKOVERFLOW("Профиль Stackoverflow");
 
-    private String title;
+    private final String title;
 
     ContactType(String title) {
         this.title = title;

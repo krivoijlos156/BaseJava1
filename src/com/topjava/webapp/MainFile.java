@@ -15,12 +15,53 @@ public class MainFile {
             throw new RuntimeException("Error", e);
         }
 
-        File dir = new File("./src/com/topjava/webapp");
-        System.out.println(dir.isDirectory());
+        //first method read directory
+        String f = "./src/com/topjava/webapp";
+        File dir = new File(f);
         String[] list = dir.list();
         if (list != null) {
             for (String name : list) {
-                System.out.println(name);
+                String f1 = f + "/" + name;
+                File dir1 = new File(f1);
+                String[] list1 = dir1.list();
+                if (dir1.isDirectory() && list1 != null) {
+                    for (String name1 : list1) {
+                        System.out.println(name1);
+                    }
+                } else {
+                    System.out.println(name);
+                }
+            }
+        }
+//second method read all directory
+        new ReadThread(new File(".")).start();
+    }
+
+    public static class ReadThread extends Thread {
+        File dirM;
+        String f = ".";
+
+        public ReadThread(File nameFile) {
+            this.dirM = nameFile;
+        }
+
+        public void run() {
+            String[] listF = dirM.list();
+            try {
+                f = dirM.getCanonicalPath();
+                if (listF != null) {
+                    for (String name : listF) {
+                        String f1 = f + "/" + name;
+                        File dir1 = new File(f1);
+                        if (dir1.isDirectory()) {
+                            new ReadThread(dir1).start();
+                        } else {
+                            System.out.println(name);
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

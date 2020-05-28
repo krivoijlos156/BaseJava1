@@ -39,7 +39,7 @@ public class MainFile {
 
     public static class ReadThread extends Thread {
         File dirM;
-        String f = ".";
+        String f;
 
         public ReadThread(File nameFile) {
             this.dirM = nameFile;

@@ -16,6 +16,7 @@ import static com.topjava.webapp.util.DateUtil.of;
 public class ResumeTestData {
     public static void main(String[] args) {
 
+
         String objectiveContent = "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям";
         String personalContent = "Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.";
 
@@ -71,7 +72,18 @@ public class ResumeTestData {
         educationDataList.add(of(2015, Month.JANUARY));
         educationDataList.add(of(2015, Month.APRIL));
 
+        Resume r1 = fillResume(  objectiveContent,  personalContent, achievementContentList,
+                                 qualificationsContentList, experienceContentList, experienceDataList,
+                                 educationContentList, educationDataList );
 
+        printContactResume(r1);
+        printContentResume(r1);
+    }
+
+    public static Resume fillResume(String objectiveContent, String personalContent, List<String> achievementContentList,
+                                    List<String> qualificationsContentList, List<String> experienceContentList,
+                                    List<LocalDate> experienceDataList, List<String> educationContentList,
+                                    List<LocalDate> educationDataList) {
         Resume r1 = new Resume("uuid1", "Name1");
         r1.setContact(EMAIL, "gkislin@yandex.ru");
         r1.setContact(PHONE, "+7(921) 855-0482");
@@ -97,9 +109,7 @@ public class ResumeTestData {
 
         List<Element> education = createListElements(educationContentList, educationDataList);
         r1.setSection(EDUCATION, education);
-
-        printContactResume(r1);
-        printContentResume(r1);
+        return r1;
     }
 
     private static List<Element> createListElements(String content) {
@@ -123,11 +133,12 @@ public class ResumeTestData {
             element.setLink(listContent.get(i + 1));
             element.setDescription(listContent.get(i + 2));
             list.add(element);
-            if (listContent.get(i + 3).startsWith("2")){
-                DateElement element2 = new DateElement(null, dateList.get(j+2), dateList.get(j + 3));
+            if (listContent.get(i + 3).startsWith("2")) {
+                DateElement element2 = new DateElement(null, dateList.get(j + 2), dateList.get(j + 3));
                 element2.setDescription(listContent.get(i + 3).substring(2));
                 list.add(element2);
-                i++;j=j+2;
+                i++;
+                j = j + 2;
             }
         }
         return list;

@@ -1,5 +1,6 @@
 package com.topjava.webapp.storage;
 
+import com.topjava.webapp.ResumeTestData;
 import com.topjava.webapp.exception.ExistStorageException;
 import com.topjava.webapp.exception.NotExistStorageException;
 import com.topjava.webapp.model.Resume;
@@ -98,5 +99,10 @@ public abstract class AbstractStorageTest {
     @Test
     public void size() {
         assertEquals(4, storage.size());
+    }
+
+    @Test
+    public void fillResume() {
+        Resume r=ResumeTestData.fillResume();
     }
 }

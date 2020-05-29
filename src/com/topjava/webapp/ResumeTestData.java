@@ -14,26 +14,26 @@ import static com.topjava.webapp.model.SectionType.*;
 import static com.topjava.webapp.util.DateUtil.of;
 
 public class ResumeTestData {
-    public static void main(String[] args) {
+    private static final String objectiveContent = "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям";
+    private static final String personalContent = "Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.";
+    private static final List<String> achievementContentList = new ArrayList<>();
+    private static final List<String> qualificationsContentList = new ArrayList<>();
+    private static final List<String> experienceContentList = new ArrayList<>();
+    private static final List<LocalDate> experienceDataList = new ArrayList<>();
+    private static final List<String> educationContentList = new ArrayList<>();
+    private static final List<LocalDate> educationDataList = new ArrayList<>();
 
-
-        String objectiveContent = "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям";
-        String personalContent = "Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.";
-
-        List<String> achievementContentList = new ArrayList<>();
+    static {
         achievementContentList.add("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");
         achievementContentList.add("Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.");
         achievementContentList.add("Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.");
         achievementContentList.add("Реализация c нуля Rich Internet Application приложения на стеке технологий JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Commet, HTML5, Highstock для алгоритмического трейдинга.");
         achievementContentList.add("Создание JavaEE фреймворка для отказоустойчивого взаимодействия слабо-связанных сервисов (SOA-base архитектура, JAX-WS, JMS, AS Glassfish). Сбор статистики сервисов и информации о состоянии через систему мониторинга Nagios. Реализация онлайн клиента для администрирования и мониторинга системы по JMX (Jython/ Django).");
 
-        List<String> qualificationsContentList = new ArrayList<>();
         qualificationsContentList.add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2");
         qualificationsContentList.add("Version control: Subversion, Git, Mercury, ClearCase, Perforce");
         qualificationsContentList.add("DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle");
 
-        List<String> experienceContentList = new ArrayList<>();
-        List<LocalDate> experienceDataList = new ArrayList<>();
         experienceContentList.add("Java Online Projects");
         experienceContentList.add("http://javaops.ru/");
         experienceContentList.add("Автор проекта. Создание, организация и проведение Java онлайн проектов и стажировок.");
@@ -52,8 +52,6 @@ public class ResumeTestData {
         experienceDataList.add(of(2012, Month.APRIL));
         experienceDataList.add(of(2014, Month.OCTOBER));
 
-        List<String> educationContentList = new ArrayList<>();
-        List<LocalDate> educationDataList = new ArrayList<>();
         educationContentList.add("Coursera");
         educationContentList.add("https://www.coursera.org/course/progfun");
         educationContentList.add("Functional Programming Principles in Scala\" by Martin Odersky");
@@ -71,11 +69,12 @@ public class ResumeTestData {
         educationContentList.add("3 месяца обучения мобильным IN сетям (Берлин)");
         educationDataList.add(of(2015, Month.JANUARY));
         educationDataList.add(of(2015, Month.APRIL));
+    }
+    public static void main(String[] args) {
 
         Resume r1 = fillResume(  objectiveContent,  personalContent, achievementContentList,
                                  qualificationsContentList, experienceContentList, experienceDataList,
                                  educationContentList, educationDataList );
-
         printContactResume(r1);
         printContentResume(r1);
     }

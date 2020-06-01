@@ -1,5 +1,7 @@
 package com.topjava.webapp;
 
+import com.topjava.webapp.storage.SortedArrayStorage;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -15,29 +17,42 @@ public class MainFile {
             throw new RuntimeException("Error", e);
         }
 
-                                                                     //first method read directory
-        File f = new File("./src/com/topjava/webapp");
-        printDirectoryDeeply(f);
+        //first method read directory
+        printDirectoryDeeply(new File("./src"));
 
-                                                                    //second method read all directory
-//        new ReadThread(new File(".")).start();
+        //second method read all directory
+        new ReadThread(new File(".")).start();
     }
 
     public static void printDirectoryDeeply(File directory) {
         File[] list = directory.listFiles();
-
         if (list != null) {
             for (File name : list) {
                 if (name.isFile()) {
-                    System.out.println("File:" + name.getName());
+                    System.out.println(searchSlashCount(name) + "File:" + name.getName());
                 } else if (name.isDirectory()) {
-                    System.out.println("Directory:" + name.getName());
+                    System.out.println(searchSlashCount(name) + "Directory:" + name.getName());
                     printDirectoryDeeply(name);
                 }
             }
         }
     }
 
+    private static String searchSlashCount(File name) {
+        String result = "";
+        try {
+            String s = name.getCanonicalPath();
+            for (char letter : s.toCharArray()) {
+                if (letter == '\\') {
+                    result = result + "  ";
+                }
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        return result;
+    }
+//---------------------------------------------------------------------------------------
     public static class ReadThread extends Thread {
         File dirM;
         String f;

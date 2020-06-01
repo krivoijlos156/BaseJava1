@@ -1,6 +1,5 @@
 package com.topjava.webapp;
 
-import com.topjava.webapp.storage.SortedArrayStorage;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,8 +19,8 @@ public class MainFile {
         //first method read directory
         printDirectoryDeeply(new File("./src"));
 
-        //second method read all directory
-        new ReadThread(new File(".")).start();
+        //second method read directory
+        new ReadThread(new File("./src")).start();
     }
 
     public static void printDirectoryDeeply(File directory) {
@@ -52,7 +51,9 @@ public class MainFile {
         }
         return result;
     }
-//---------------------------------------------------------------------------------------
+
+
+
     public static class ReadThread extends Thread {
         File dirM;
         String f;

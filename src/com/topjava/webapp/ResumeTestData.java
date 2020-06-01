@@ -5,7 +5,6 @@ import com.topjava.webapp.model.*;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -144,7 +143,7 @@ public class ResumeTestData {
         String s = listContent.get(i + 1);
         int pointIndex = s.indexOf('.');
         int wwwIndex = s.indexOf("www");
-        return new Link(s.substring(wwwIndex+3, pointIndex), s.substring(pointIndex + 1));
+        return new Link(s.substring(wwwIndex + 3, pointIndex), s.substring(pointIndex + 1));
     }
 
 

@@ -8,12 +8,12 @@ import java.util.Objects;
 public class DateElement extends Element {
     private final LocalDate from;
     private final LocalDate to;
-    private  Link link;
+    private Link link;
 
     public DateElement(String title, LocalDate from, LocalDate to) {
         super(title);
-        Objects.requireNonNull(from,"from must not be null");
-        Objects.requireNonNull(to,"to must not be null");
+        Objects.requireNonNull(from, "from must not be null");
+        Objects.requireNonNull(to, "to must not be null");
         this.from = from;
         this.to = to;
     }

@@ -10,7 +10,7 @@ public class MainDate {
     public static void main(String[] args) {
 
         LocalDate ld = LocalDate.now();
-        LocalDate ld1=of(3, Month.SEPTEMBER);
+        LocalDate ld1 = of(3, Month.SEPTEMBER);
         System.out.println(ld);
         System.out.println(ld1);
 

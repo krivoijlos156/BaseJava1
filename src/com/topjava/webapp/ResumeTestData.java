@@ -70,6 +70,7 @@ public class ResumeTestData {
         educationDataList.add(of(2015, Month.JANUARY));
         educationDataList.add(of(2015, Month.APRIL));
     }
+
     public static void main(String[] args) {
 
         Resume r1 = fillResume("uuid1", "Name1");
@@ -127,6 +128,7 @@ public class ResumeTestData {
             element.setLink(listContent.get(i + 1));
             element.setDescription(listContent.get(i + 2));
             list.add(element);
+            if ((i + 3) <= listContent.size())break;
             if (listContent.get(i + 3).startsWith("2")) {
                 DateElement element2 = new DateElement(null, dateList.get(j + 2), dateList.get(j + 3));
                 element2.setDescription(listContent.get(i + 3).substring(2));

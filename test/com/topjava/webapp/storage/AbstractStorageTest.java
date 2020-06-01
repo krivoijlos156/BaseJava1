@@ -63,7 +63,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() {
-        Resume resume = new Resume("uuid1", "Name1");
+        Resume resume = ResumeTestData.fillResume("uuid1", "Name1");
         assertEquals(resume, storage.get("uuid1"));
     }
 
@@ -86,11 +86,11 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAllSorted() {
-        Resume resume = new Resume("uuid0", "Name0");
+        Resume resume = ResumeTestData.fillResume("uuid0", "Name0");
         storage.save(resume);
         List<Resume> listNew = new ArrayList<>();
         for (int i = 0; i <= 4; i++) {
-            listNew.add(new Resume("uuid" + i, "Name" + i));
+            listNew.add(ResumeTestData.fillResume("uuid" + i, "Name" + i));
         }
         List<Resume> list = storage.getAllSorted();
         assertEquals(listNew, list);

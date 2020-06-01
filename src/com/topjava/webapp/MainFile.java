@@ -15,26 +15,27 @@ public class MainFile {
             throw new RuntimeException("Error", e);
         }
 
-        //first method read directory
-        String f = "./src/com/topjava/webapp";
-        File dir = new File(f);
-        String[] list = dir.list();
+                                                                     //first method read directory
+        File f = new File("./src/com/topjava/webapp");
+        printDirectoryDeeply(f);
+
+                                                                    //second method read all directory
+//        new ReadThread(new File(".")).start();
+    }
+
+    public static void printDirectoryDeeply(File directory) {
+        File[] list = directory.listFiles();
+
         if (list != null) {
-            for (String name : list) {
-                String f1 = f + "/" + name;
-                File dir1 = new File(f1);
-                String[] list1 = dir1.list();
-                if (dir1.isDirectory() && list1 != null) {
-                    for (String name1 : list1) {
-                        System.out.println(name1);
-                    }
-                } else {
-                    System.out.println(name);
+            for (File name : list) {
+                if (name.isFile()) {
+                    System.out.println("File:" + name.getName());
+                } else if (name.isDirectory()) {
+                    System.out.println("Directory:" + name.getName());
+                    printDirectoryDeeply(name);
                 }
             }
         }
-//second method read all directory
-        new ReadThread(new File(".")).start();
     }
 
     public static class ReadThread extends Thread {

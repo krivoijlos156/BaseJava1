@@ -8,7 +8,7 @@ import java.util.Objects;
 public class DateElement extends Element {
     private final LocalDate from;
     private final LocalDate to;
-    private  String link;
+    private  Link link;
 
     public DateElement(String title, LocalDate from, LocalDate to) {
         super(title);
@@ -18,11 +18,11 @@ public class DateElement extends Element {
         this.to = to;
     }
 
-    public String getLink() {
+    public Link getLink() {
         return link;
     }
 
-    public void setLink(String link) {
+    public void setLink(Link link) {
         this.link = link;
     }
 

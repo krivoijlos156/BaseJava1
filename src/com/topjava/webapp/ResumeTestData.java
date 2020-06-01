@@ -35,13 +35,13 @@ public class ResumeTestData {
         qualificationsContentList.add("DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle");
 
         experienceContentList.add("Java Online Projects");
-        experienceContentList.add("http://javaops.ru/");
+        experienceContentList.add("www.javaops.ru/");
         experienceContentList.add("Автор проекта. Создание, организация и проведение Java онлайн проектов и стажировок.");
         experienceDataList.add(of(2013, Month.OCTOBER));
         experienceDataList.add(LocalDate.now());
 
         experienceContentList.add("Wrik");
-        experienceContentList.add("https://www.wrike.com/");
+        experienceContentList.add("www.wrike.com/");
         experienceContentList.add("Старший разработчик (backend). Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.");
         experienceDataList.add(of(2014, Month.OCTOBER));
         experienceDataList.add(of(2016, Month.JANUARY));
@@ -53,19 +53,19 @@ public class ResumeTestData {
         experienceDataList.add(of(2014, Month.OCTOBER));
 
         educationContentList.add("Coursera");
-        educationContentList.add("https://www.coursera.org/course/progfun");
+        educationContentList.add("www.coursera.org");
         educationContentList.add("Functional Programming Principles in Scala\" by Martin Odersky");
         educationDataList.add(of(2013, Month.MARCH));
         educationDataList.add(of(2013, Month.MAY));
 
         educationContentList.add("Luxoft");
-        educationContentList.add("http://www.luxoft-training.ru/training/catalog/course.html?ID=22366");
+        educationContentList.add("www.luxoft-training.ru");
         educationContentList.add("Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"");
         educationDataList.add(of(2011, Month.NOVEMBER));
         educationDataList.add(of(2011, Month.APRIL));
 
         educationContentList.add("Siemens AG");
-        educationContentList.add("http://www.siemens.ru/");
+        educationContentList.add("www.siemens.ru");
         educationContentList.add("3 месяца обучения мобильным IN сетям (Берлин)");
         educationDataList.add(of(2015, Month.JANUARY));
         educationDataList.add(of(2015, Month.APRIL));
@@ -125,10 +125,10 @@ public class ResumeTestData {
         List<Element> list = new ArrayList<>();
         for (int i = 0, j = 0; i < listContent.size(); i = i + 3, j = j + 2) {
             DateElement element = new DateElement(listContent.get(i), dateList.get(j), dateList.get(j + 1));
-            element.setLink(listContent.get(i + 1));
+            element.setLink(createLink(listContent, i));
             element.setDescription(listContent.get(i + 2));
             list.add(element);
-            if ((i + 3) <= listContent.size())break;
+            if ((i + 3) <= listContent.size()) break;
             if (listContent.get(i + 3).startsWith("2")) {
                 DateElement element2 = new DateElement(null, dateList.get(j + 2), dateList.get(j + 3));
                 element2.setDescription(listContent.get(i + 3).substring(2));
@@ -138,6 +138,13 @@ public class ResumeTestData {
             }
         }
         return list;
+    }
+
+    private static Link createLink(List<String> listContent, int i) {
+        String s = listContent.get(i + 1);
+        int pointIndex = s.indexOf('.');
+        int wwwIndex = s.indexOf("www");
+        return new Link(s.substring(wwwIndex+3, pointIndex), s.substring(pointIndex + 1));
     }
 
 

@@ -24,7 +24,7 @@ public abstract class AbstractStorageTest {
     public void setUp() throws Exception {
         storage.clear();
         for (int i = 1; i <= 4; i++) {
-            storage.save(new Resume("uuid" + i, "Name" + i));
+            storage.save(ResumeTestData.fillResume("uuid" + i, "Name" + i));
         }
     }
 
@@ -101,8 +101,4 @@ public abstract class AbstractStorageTest {
         assertEquals(4, storage.size());
     }
 
-    @Test
-    public void fillResume() {
-        Resume r=ResumeTestData.fillResume();
-    }
 }

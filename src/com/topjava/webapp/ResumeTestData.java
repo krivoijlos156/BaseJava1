@@ -72,13 +72,13 @@ public class ResumeTestData {
     }
     public static void main(String[] args) {
 
-        Resume r1 = fillResume();
+        Resume r1 = fillResume("uuid1", "Name1");
         printContactResume(r1);
         printContentResume(r1);
     }
 
-    public static Resume fillResume() {
-        Resume r1 = new Resume("uuid1", "Name1");
+    public static Resume fillResume(String uuid, String name) {
+        Resume r1 = new Resume(uuid, name);
         r1.setContact(EMAIL, "gkislin@yandex.ru");
         r1.setContact(PHONE, "+7(921) 855-0482");
         r1.setContact(SKYPE, "grigory.kislin");

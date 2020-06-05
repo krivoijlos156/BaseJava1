@@ -6,8 +6,10 @@ import com.topjava.webapp.storage.strategyIO.ObjectStreamStorage;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class FileStorage extends AbstractStorage<File> {
     private final File directory;
@@ -72,20 +74,15 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> getList() {
-        File[] list = directory.listFiles();
-        List<Resume> listResume = new ArrayList<>();
-        for (File name : Objects.requireNonNull(list)) {
-            listResume.add(doGet(name));
-        }
-        return listResume;
+        return Arrays.stream(Objects.requireNonNull(directory.listFiles()))
+                .map(this::doGet)
+                .collect(Collectors.toList());
     }
 
     @Override
     public void clear() {
-        File[] list = directory.listFiles();
-        for (File name : Objects.requireNonNull(list)) {
-            doDelete(name);
-        }
+        Arrays.stream(Objects.requireNonNull(directory.listFiles()))
+                .forEach(this::doDelete);
     }
 
     @Override

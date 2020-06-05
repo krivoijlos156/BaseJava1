@@ -74,25 +74,21 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> getList() {
-        List<Resume> listResume = new ArrayList<>();
+        List<Resume> list =null;
         try {
-            List<Path> list = Files.list(directory).collect(Collectors.toList());
-            for (Path name : list) {
-                listResume.add(doGet(name));
-            }
+             list = Files.list(directory)
+                    .map(this::doGet)
+                    .collect(Collectors.toList());
         } catch (IOException e) {
             throw new StorageException("IO error(read) directory", null, e);
         }
-        return listResume;
+        return list;
     }
 
     @Override
     public void clear() {
         try {
-            List<Path> list = Files.list(directory).collect(Collectors.toList());
-            for (Path name : list) {
-                Files.delete(name);
-            }
+            Files.list(directory).forEach(this::doDelete);
         } catch (IOException e) {
             throw new StorageException("IO error(read) directory", null, e);
         }

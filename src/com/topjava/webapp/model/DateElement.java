@@ -6,6 +6,8 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class DateElement extends Element {
+    private static final long serialVersionUID=1L;
+
     private final LocalDate from;
     private final LocalDate to;
     private Link link;

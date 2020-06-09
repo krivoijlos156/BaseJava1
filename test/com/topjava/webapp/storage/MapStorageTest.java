@@ -6,4 +6,3 @@ public class MapStorageTest extends AbstractStorageTest {
         super(new MapStorage());
     }
 }
-

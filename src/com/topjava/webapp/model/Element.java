@@ -3,8 +3,8 @@ package com.topjava.webapp.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Element  implements Serializable {
-    private static final long serialVersionUID=1L;
+public class Element implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     protected String title;
     protected String description;
@@ -43,4 +43,3 @@ public class Element  implements Serializable {
         return title + ", " + '\n' + description;
     }
 }
-

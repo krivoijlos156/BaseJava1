@@ -1,10 +1,8 @@
 package com.topjava.webapp;
 
 import com.topjava.webapp.model.Resume;
-import com.topjava.webapp.storage.ListStorage;
 import com.topjava.webapp.storage.MapStorage;
 import com.topjava.webapp.storage.Storage;
-import com.topjava.webapp.storage.UuidMapStorage;
 
 
 public class MainCollection {

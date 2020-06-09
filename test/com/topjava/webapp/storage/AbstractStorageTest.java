@@ -11,7 +11,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
@@ -40,7 +39,7 @@ public abstract class AbstractStorageTest {
     public void update() {
         Resume resume = new Resume("uuid2", "Name9");
         storage.update(resume);
-        assertTrue(resume.equals(storage.get("uuid2")));
+        assertEquals(resume, storage.get("uuid2"));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -102,5 +101,4 @@ public abstract class AbstractStorageTest {
     public void size() {
         assertEquals(4, storage.size());
     }
-
 }

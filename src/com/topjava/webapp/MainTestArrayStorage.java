@@ -45,12 +45,9 @@ public class MainTestArrayStorage {
         printAll();
 
         int t = 0;
-        while (true) {
+        do {
             t++;
-            if (t > 10000) {
-                break;
-            }
-        }
+        } while (t <= 10000);
 
         System.out.println("Size: " + ARRAY_STORAGE.size());
     }

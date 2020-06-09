@@ -5,7 +5,6 @@ import com.topjava.webapp.exception.StorageException;
 import com.topjava.webapp.model.Resume;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -20,7 +19,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     @Override
     protected boolean isExist(Integer index) {
-        return  index >= 0;
+        return index >= 0;
     }
 
     @Override
@@ -36,7 +35,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     @Override
     protected void doUpdate(Resume resume, Integer index) {
-        storage[ index] = resume;
+        storage[index] = resume;
     }
 
     @Override
@@ -46,7 +45,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     @Override
     protected void doDelete(Integer index) {
-        deleteItem( index);
+        deleteItem(index);
         storage[size - 1] = null;
         size--;
     }
@@ -56,7 +55,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
         if (size == storage.length) {
             throw new StorageException("Resume " + resume.getUuid() + "limit is exceeded.", resume.getUuid());
         }
-        saveItem(resume,  index);
+        saveItem(resume, index);
         size++;
     }
 

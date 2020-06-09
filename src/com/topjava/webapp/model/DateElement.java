@@ -8,16 +8,16 @@ import java.util.Objects;
 public class DateElement extends Element {
     private static final long serialVersionUID=1L;
 
-    private final LocalDate from;
-    private final LocalDate to;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
     private Link link;
 
     public DateElement(String title, LocalDate from, LocalDate to) {
         super(title);
         Objects.requireNonNull(from, "from must not be null");
         Objects.requireNonNull(to, "to must not be null");
-        this.from = from;
-        this.to = to;
+        this.startDate = from;
+        this.endDate = to;
     }
 
     public Link getLink() {
@@ -33,21 +33,21 @@ public class DateElement extends Element {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DateElement that = (DateElement) o;
-        return from.equals(that.from) &&
-                to.equals(that.to) &&
+        return startDate.equals(that.startDate) &&
+                endDate.equals(that.endDate) &&
                 Objects.equals(link, that.link);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(from, to, link);
+        return Objects.hash(startDate, endDate, link);
     }
 
     @Override
     public String toString() {
         DateTimeFormatter fOut = DateTimeFormatter.ofPattern("MM/uuuu", Locale.UK);
-        String fromNew = from.format(fOut);
-        String toNew = to.format(fOut);
+        String fromNew = startDate.format(fOut);
+        String toNew = endDate.format(fOut);
         return title + '(' + link + ')' + '\n' +
                 " c-" + fromNew +
                 " до-" + toNew + '\n' +

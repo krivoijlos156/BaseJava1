@@ -16,69 +16,20 @@ public class MainFile {
             throw new RuntimeException("Error", e);
         }
 
-        //first method read directory
-        printDirectoryDeeply(new File("./src"));
-
-        //second method read directory
-        new ReadThread(new File("./src")).start();
+        String indent = "";
+        printDirectoryDeeply(new File("./src"), indent);
     }
 
-    public static void printDirectoryDeeply(File directory) {
+    public static void printDirectoryDeeply(File directory, String indent) {
         File[] list = directory.listFiles();
         if (list != null) {
             for (File name : list) {
                 if (name.isFile()) {
-                    System.out.println(searchSlashCount(name) + "File:" + name.getName());
+                    System.out.println(indent + "File:" + name.getName());
                 } else if (name.isDirectory()) {
-                    System.out.println(searchSlashCount(name) + "Directory:" + name.getName());
-                    printDirectoryDeeply(name);
+                    System.out.println(indent + "Directory:" + name.getName());
+                    printDirectoryDeeply(name, indent + " ");
                 }
-            }
-        }
-    }
-
-    private static String searchSlashCount(File name) {
-        String result = "";
-        try {
-            String s = name.getCanonicalPath();
-            for (char letter : s.toCharArray()) {
-                if (letter == '\\') {
-                    result = result + "  ";
-                }
-            }
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-        return result;
-    }
-
-
-
-    public static class ReadThread extends Thread {
-        File dirM;
-        String f;
-
-        public ReadThread(File nameFile) {
-            this.dirM = nameFile;
-        }
-
-        public void run() {
-            String[] listF = dirM.list();
-            try {
-                f = dirM.getCanonicalPath();
-                if (listF != null) {
-                    for (String name : listF) {
-                        String f1 = f + "/" + name;
-                        File dir1 = new File(f1);
-                        if (dir1.isDirectory()) {
-                            new ReadThread(dir1).start();
-                        } else {
-                            System.out.println(name);
-                        }
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
     }

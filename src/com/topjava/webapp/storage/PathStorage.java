@@ -8,10 +8,10 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
@@ -74,33 +74,27 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> getList() {
-        List<Resume> list =null;
-        try {
-             list = Files.list(directory)
-                    .map(this::doGet)
-                    .collect(Collectors.toList());
-        } catch (IOException e) {
-            throw new StorageException("IO error(read) directory", null, e);
-        }
-        return list;
+        return getStreamList()
+                .map(this::doGet)
+                .collect(Collectors.toList());
     }
 
     @Override
     public void clear() {
-        try {
-            Files.list(directory).forEach(this::doDelete);
-        } catch (IOException e) {
-            throw new StorageException("IO error(read) directory", null, e);
-        }
+        getStreamList().forEach(this::doDelete);
     }
 
     @Override
     public int size() {
-        try {
-            return (int) Files.list(directory).count();
-        } catch (IOException e) {
-            throw new StorageException("IO error(read) directory", null, e);
-        }
+        Stream<Path> list = getStreamList();
+        return (int) list.count();
     }
 
+    private Stream<Path> getStreamList() {
+        try {
+            return Files.list(directory);
+        } catch (IOException e) {
+            throw new StorageException("Error directory", null, e);
+        }
+    }
 }

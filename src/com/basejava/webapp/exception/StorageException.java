@@ -3,6 +3,10 @@ package com.basejava.webapp.exception;
 public class StorageException extends RuntimeException {
     private final String uuid;
 
+    public StorageException(String massage) {
+        super(massage);
+        this.uuid = null;
+    }
     public StorageException(String massage, String uuid) {
         super(massage);
         this.uuid = uuid;

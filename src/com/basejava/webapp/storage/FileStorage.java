@@ -2,7 +2,6 @@ package com.basejava.webapp.storage;
 
 import com.basejava.webapp.exception.StorageException;
 import com.basejava.webapp.model.Resume;
-import com.basejava.webapp.storage.strategyIO.ObjectStreamStorage;
 import com.basejava.webapp.storage.strategyIO.StrategyIO;
 
 import java.io.*;
@@ -76,31 +75,27 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> getList() {
-        List<Resume> list = Arrays.stream(Objects.requireNonNull(directory.listFiles()))
+        return Arrays.stream(getDirectoryFilesList())
                 .map(this::doGet)
                 .collect(Collectors.toList());
-        if (list.isEmpty()) {
-            throw new StorageException("List empty", null);
-        }
-        return list;
     }
 
     @Override
     public void clear() {
-        String[] list = directory.list();
-        if (list == null) {
-            throw new StorageException("Error, Dictionary empty", null);
-        }
-        Arrays.stream(Objects.requireNonNull(directory.listFiles()))
+        Arrays.stream(getDirectoryFilesList())
                 .forEach(this::doDelete);
     }
 
     @Override
     public int size() {
-        String[] list = directory.list();
+        return getDirectoryFilesList().length;
+    }
+
+    private File[] getDirectoryFilesList() {
+        File[] list = directory.listFiles();
         if (list == null) {
-            throw new StorageException("Error, Dictionary empty", null);
+            throw new StorageException("Error, Dictionary empty");
         }
-        return list.length;
+        return list;
     }
 }

@@ -4,8 +4,7 @@ public class StorageException extends RuntimeException {
     private final String uuid;
 
     public StorageException(String massage) {
-        super(massage);
-        this.uuid = null;
+        this(massage,null);
     }
     public StorageException(String massage, String uuid) {
         super(massage);

@@ -13,8 +13,7 @@ public class XmlStreamSerializer implements StrategyIO {
     private XmlParser xmlParser;
 
     public XmlStreamSerializer() {
-        xmlParser = new XmlParser(
-                Resume.class, Element.class, DateElement.class, Link.class);
+        xmlParser = new XmlParser(Resume.class, Element.class, DateElement.class, Link.class);
     }
 
     @Override

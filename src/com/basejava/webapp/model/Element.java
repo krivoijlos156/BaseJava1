@@ -1,13 +1,19 @@
 package com.basejava.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Element implements Serializable {
     private static final long serialVersionUID = 1L;
 
     protected String title;
     protected String description;
+
+    public Element() {
+    }
 
     public Element(String title) {
         this.title = title;

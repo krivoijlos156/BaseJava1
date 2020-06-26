@@ -8,9 +8,12 @@ import java.util.Objects;
 public class DateElement extends Element {
     private static final long serialVersionUID = 1L;
 
-    private final LocalDate startDate;
-    private final LocalDate endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private Link link;
+
+    public DateElement() {
+    }
 
     public DateElement(String title, LocalDate from, LocalDate to) {
         super(title);

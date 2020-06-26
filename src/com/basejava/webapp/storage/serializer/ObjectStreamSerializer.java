@@ -1,11 +1,11 @@
-package com.basejava.webapp.storage.strategyIO;
+package com.basejava.webapp.storage.serializer;
 
 import com.basejava.webapp.exception.StorageException;
 import com.basejava.webapp.model.Resume;
 
 import java.io.*;
 
-public class ObjectStreamStorage implements StrategyIO {
+public class ObjectStreamSerializer implements StrategyIO {
 
     @Override
     public Resume doRead(InputStream is) throws IOException {

@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Element implements Serializable {
+public class Element implements IElement, Serializable {
     private static final long serialVersionUID = 1L;
 
     protected String title;
@@ -19,12 +19,24 @@ public class Element implements Serializable {
         this.title = title;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
 
+    @Override
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override

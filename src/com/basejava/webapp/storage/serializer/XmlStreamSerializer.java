@@ -8,12 +8,21 @@ import com.basejava.webapp.util.XmlParser;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.EnumMap;
 
 public class XmlStreamSerializer implements StrategyIO {
     private XmlParser xmlParser;
 
     public XmlStreamSerializer() {
-        xmlParser = new XmlParser(Resume.class, Element.class, DateElement.class, Link.class);
+        xmlParser = new XmlParser(
+                Resume.class,
+                Element.class,
+                DateElement.class,
+                Link.class,
+                ArrayList.class,
+                EnumMap.class
+        );
     }
 
     @Override

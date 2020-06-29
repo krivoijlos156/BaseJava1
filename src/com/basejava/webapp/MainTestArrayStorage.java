@@ -1,6 +1,7 @@
 package com.basejava.webapp;
 
 import com.basejava.webapp.model.Element;
+import com.basejava.webapp.model.IElement;
 import com.basejava.webapp.model.Resume;
 import com.basejava.webapp.model.SectionType;
 import com.basejava.webapp.storage.AbstractArrayStorage;
@@ -17,13 +18,13 @@ public class MainTestArrayStorage {
         Resume r2 = new Resume("uuid2", "Name2");
         Resume r3 = new Resume("uuid3", "Name3");
         Resume r4 = new Resume("uuid1", "Name4");
-        List<Element> list = new ArrayList<>();
+        ArrayList<IElement> list = new ArrayList<>();
         list.add(new Element("ad"));
         list.add(new Element("adw"));
         list.add(new Element("ad2"));
 
         r1.setSection(SectionType.PERSONAL, list);
-        List<Element> section = r1.getSection(SectionType.PERSONAL);
+        List<IElement> section = r1.getSection(SectionType.PERSONAL);
 
 
         ARRAY_STORAGE.save(r1);

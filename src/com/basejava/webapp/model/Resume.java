@@ -13,8 +13,7 @@ public class Resume implements Comparable<Resume>, Serializable {
     private String uuid;
     private String fullName;
     public final EnumMap<ContactType, String> contacts = new EnumMap<>(ContactType.class);
-    public final EnumMap<SectionType, List<Element>> sections = new EnumMap<>(SectionType.class);
-
+    public final EnumMap<SectionType, ArrayList<IElement>> sections = new EnumMap<>(SectionType.class);
     public Resume() {
     }
 
@@ -45,11 +44,11 @@ public class Resume implements Comparable<Resume>, Serializable {
         contacts.put(type, value);
     }
 
-    public List<Element> getSection(SectionType type) {
+    public List<IElement> getSection(SectionType type) {
         return sections.get(type);
     }
 
-    public void setSection(SectionType type, List<Element> values) {
+    public void setSection(SectionType type, ArrayList<IElement> values) {
         sections.put(type, values);
     }
 
@@ -60,13 +59,13 @@ public class Resume implements Comparable<Resume>, Serializable {
         Resume resume = (Resume) o;
         return Objects.equals(uuid, resume.uuid) &&
                 Objects.equals(fullName, resume.fullName) &&
-                Objects.equals(sections, resume.sections) &&
-                Objects.equals(contacts, resume.contacts);
+                Objects.equals(contacts, resume.contacts) &&
+                Objects.equals(sections, resume.sections);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, fullName, sections, contacts);
+        return Objects.hash(uuid, fullName, contacts, sections);
     }
 
     @Override

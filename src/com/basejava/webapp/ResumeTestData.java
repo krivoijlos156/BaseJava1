@@ -15,12 +15,12 @@ import static com.basejava.webapp.util.DateUtil.of;
 public class ResumeTestData {
     private static final String objectiveContent = "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям";
     private static final String personalContent = "Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.";
-    private static final List<String> achievementContentList = new ArrayList<>();
-    private static final List<String> qualificationsContentList = new ArrayList<>();
-    private static final List<String> experienceContentList = new ArrayList<>();
-    private static final List<LocalDate> experienceDataList = new ArrayList<>();
-    private static final List<String> educationContentList = new ArrayList<>();
-    private static final List<LocalDate> educationDataList = new ArrayList<>();
+    private static final ArrayList<String> achievementContentList = new ArrayList<>();
+    private static final ArrayList<String> qualificationsContentList = new ArrayList<>();
+    private static final ArrayList<String> experienceContentList = new ArrayList<>();
+    private static final ArrayList<LocalDate> experienceDataList = new ArrayList<>();
+    private static final ArrayList<String> educationContentList = new ArrayList<>();
+    private static final ArrayList<LocalDate> educationDataList = new ArrayList<>();
 
     static {
         achievementContentList.add("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");
@@ -86,42 +86,42 @@ public class ResumeTestData {
         r1.setContact(GITHUB, "https://github.com/gkislin");
         r1.setContact(STACKOVERFLOW, "https://stackoverflow.com/users/548473");
 
-        List<Element> objective = createListElements(objectiveContent);
+        ArrayList<IElement> objective = createListElements(objectiveContent);
         r1.setSection(OBJECTIVE, objective);
 
-        List<Element> personal = createListElements(personalContent);
+        ArrayList<IElement> personal = createListElements(personalContent);
         r1.setSection(PERSONAL, personal);
 
-        List<Element> achievement = createListElements(achievementContentList);
+        ArrayList<IElement> achievement = createListElements(achievementContentList);
         r1.setSection(ACHIEVEMENT, achievement);
 
-        List<Element> qualifications = createListElements(qualificationsContentList);
+        ArrayList<IElement> qualifications = createListElements(qualificationsContentList);
         r1.setSection(QUALIFICATIONS, qualifications);
 
-        List<Element> experience = createListElements(experienceContentList, experienceDataList);
+        ArrayList<IElement> experience = createListElements(experienceContentList, experienceDataList);
         r1.setSection(EXPERIENCE, experience);
 
-        List<Element> education = createListElements(educationContentList, educationDataList);
+        ArrayList<IElement> education = createListElements(educationContentList, educationDataList);
         r1.setSection(EDUCATION, education);
         return r1;
     }
 
-    private static List<Element> createListElements(String content) {
-        List<Element> list = new ArrayList<>();
+    private static ArrayList<IElement> createListElements(String content) {
+        ArrayList<IElement> list = new ArrayList<>();
         list.add(new Element(content));
         return list;
     }
 
-    private static List<Element> createListElements(List<String> listContent) {
-        List<Element> list = new ArrayList<>();
+    private static ArrayList<IElement> createListElements(List<String> listContent) {
+        ArrayList<IElement> list = new ArrayList<>();
         for (String content : listContent) {
             list.add(new Element(content));
         }
         return list;
     }
 
-    private static List<Element> createListElements(List<String> listContent, List<LocalDate> dateList) {
-        List<Element> list = new ArrayList<>();
+    private static ArrayList<IElement> createListElements(List<String> listContent, List<LocalDate> dateList) {
+        ArrayList<IElement> list = new ArrayList<>();
         for (int i = 0, j = 0; i < listContent.size(); i = i + 3, j = j + 2) {
             DateElement element = new DateElement(listContent.get(i), dateList.get(j), dateList.get(j + 1));
             element.setLink(createLink(listContent, i));
@@ -148,9 +148,9 @@ public class ResumeTestData {
 
 
     private static void printContentResume(Resume r) {
-        for (Map.Entry<SectionType, List<Element>> entry : r.sections.entrySet()) {
+        for (Map.Entry<SectionType, ArrayList<IElement>> entry : r.sections.entrySet()) {
             System.out.println(entry.getKey());
-            for (Element element : entry.getValue()) {
+            for (IElement element : entry.getValue()) {
                 System.out.println(element);
             }
             System.out.println("");

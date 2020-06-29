@@ -1,5 +1,8 @@
 package com.basejava.webapp.model;
 
+import com.basejava.webapp.util.LocalDateAdapter;
+
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -7,8 +10,9 @@ import java.util.Objects;
 
 public class DateElement extends Element {
     private static final long serialVersionUID = 1L;
-
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate startDate;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate endDate;
     private Link link;
 

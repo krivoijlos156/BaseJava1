@@ -28,19 +28,13 @@ public class DataStreamSerializer implements StrategyIO {
                 boolean isElement = entry.getValue().get(0).getClass().toString()
                         .equals("class com.basejava.webapp.model.Element");
                 dos.writeBoolean(isElement);
-
+                dos.writeUTF(entry.getKey().name());
                 int listSize = entry.getValue().size();
                 dos.writeInt(listSize);
 
-                dos.writeUTF(entry.getKey().name());
-
-                if (isElement) {
-                    for (int i = 0; i < listSize; i++) {
-                        dos.writeUTF(entry.getValue().get(i).getTitle());
-                    }
-                } else {
-                    for (int i = 0; i < listSize; i++) {
-                        dos.writeUTF(entry.getValue().get(i).getTitle());
+                for (int i = 0; i < listSize; i++) {
+                    dos.writeUTF(entry.getValue().get(i).getTitle());
+                    if (!isElement) {
                         writeUrl(dos, entry.getValue().get(i).getLink());
                         writeDate(dos, entry.getValue().get(i).getStartDate());
                         writeDate(dos, entry.getValue().get(i).getEndDate());
@@ -69,33 +63,35 @@ public class DataStreamSerializer implements StrategyIO {
             String fullName = dis.readUTF();
 
             Resume resume = new Resume(uuid, fullName);
-            int sizeListCintacts = dis.readInt();
-            for (int i = 0; i < sizeListCintacts; i++) {
-                resume.setContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
+            readPart(dis, () -> resume.setContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
             while (dis.available() > 0) {
                 boolean isElement = dis.readBoolean();
-                int sizeElementInSections = dis.readInt();
                 SectionType sectionName = SectionType.valueOf(dis.readUTF());
                 ArrayList<IElement> sectionNew = new ArrayList<>();
                 if (isElement) {
-                    for (int i = 0; i < sizeElementInSections; i++) {
-                        Element elementNew = new Element(dis.readUTF());
-                        sectionNew.add(elementNew);
-                    }
+                    readPart(dis, () -> sectionNew.add(new Element(dis.readUTF())));
                     resume.setSection(sectionName, sectionNew);
                 } else {
-                    for (int i = 0; i < sizeElementInSections; i++) {
-                        sectionNew.add(createElement(dis.readUTF(),
-                                new Link(dis.readUTF(), dis.readUTF()),
-                                DateUtil.of(dis.readInt(), dis.readInt()),
-                                DateUtil.of(dis.readInt(), dis.readInt()),
-                                dis.readUTF()));
-                    }
+                    readPart(dis, () -> sectionNew.add(createElement(dis.readUTF(),
+                            new Link(dis.readUTF(), dis.readUTF()),
+                            DateUtil.of(dis.readInt(), dis.readInt()),
+                            DateUtil.of(dis.readInt(), dis.readInt()),
+                            dis.readUTF())));
                     resume.setSection(sectionName, sectionNew);
                 }
             }
             return resume;
+        }
+    }
+
+    private interface GoRead {
+        void read() throws IOException;
+    }
+
+    private void readPart(DataInputStream dis, GoRead goRead) throws IOException {
+        int sizeListContacts = dis.readInt();
+        for (int i = 0; i < sizeListContacts; i++) {
+            goRead.read();
         }
     }
 

@@ -1,6 +1,7 @@
 package com.basejava.webapp.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 public interface IElement extends Serializable {
 
@@ -11,4 +12,10 @@ public interface IElement extends Serializable {
     String getTitle();
 
     void setTitle(String title);
+
+    LocalDate getStartDate();
+
+    LocalDate getEndDate();
+
+    Link getLink();
 }

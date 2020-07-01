@@ -64,8 +64,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() {
-        Resume resume = ResumeTestData.fillResume("uuid1", "Name1");
-        assertEquals(resume, storage.get("uuid1"));
+        Resume expected = ResumeTestData.fillResume("uuid1", "Name1");
+        Resume actual = storage.get("uuid1");
+        assertEquals(expected, actual);
     }
 
     @Test(expected = NotExistStorageException.class)

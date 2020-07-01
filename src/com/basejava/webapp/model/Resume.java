@@ -1,8 +1,12 @@
 package com.basejava.webapp.model;
 
+import com.basejava.webapp.util.XmlEnumMapAdapter;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.*;
 
@@ -13,6 +17,8 @@ public class Resume implements Comparable<Resume>, Serializable {
     private String uuid;
     private String fullName;
     public final EnumMap<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+    @XmlElement
+    @XmlJavaTypeAdapter(XmlEnumMapAdapter.class)
     public final EnumMap<SectionType, ArrayList<IElement>> sections = new EnumMap<>(SectionType.class);
     public Resume() {
     }
@@ -50,6 +56,15 @@ public class Resume implements Comparable<Resume>, Serializable {
 
     public void setSection(SectionType type, ArrayList<IElement> values) {
         sections.put(type, values);
+    }
+
+    public EnumMap<ContactType, String> getContacts() {
+
+        return contacts;
+    }
+
+    public EnumMap<SectionType, ArrayList<IElement>> getSections() {
+        return sections;
     }
 
     @Override

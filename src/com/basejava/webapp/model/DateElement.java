@@ -1,6 +1,6 @@
 package com.basejava.webapp.model;
 
-import com.basejava.webapp.util.LocalDateAdapter;
+import com.basejava.webapp.util.XmlLocalDateAdapter;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
@@ -10,9 +10,9 @@ import java.util.Objects;
 
 public class DateElement extends Element {
     private static final long serialVersionUID = 1L;
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    @XmlJavaTypeAdapter(XmlLocalDateAdapter.class)
     private LocalDate startDate;
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    @XmlJavaTypeAdapter(XmlLocalDateAdapter.class)
     private LocalDate endDate;
     private Link link;
 
@@ -25,6 +25,14 @@ public class DateElement extends Element {
         Objects.requireNonNull(to, "to must not be null");
         this.startDate = from;
         this.endDate = to;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
     public Link getLink() {

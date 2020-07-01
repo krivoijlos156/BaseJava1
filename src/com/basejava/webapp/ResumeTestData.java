@@ -141,9 +141,9 @@ public class ResumeTestData {
 
     private static Link createLink(List<String> listContent, int i) {
         String s = listContent.get(i + 1);
-        int pointIndex = s.indexOf('.');
+        int pointIndex = s.lastIndexOf('.');
         int wwwIndex = s.indexOf("www");
-        return new Link(s.substring(wwwIndex + 3, pointIndex), s.substring(pointIndex + 1));
+        return new Link(s.substring(wwwIndex + 4, pointIndex), s.substring(pointIndex + 1));
     }
 
 

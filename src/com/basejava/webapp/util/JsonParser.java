@@ -13,15 +13,15 @@ import java.util.EnumMap;
 public class JsonParser {
     private static Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
-            .registerTypeAdapter(IElement.class, new InheritanceAdapter<IElement>())
+            .registerTypeAdapter(IElement.class, new JsonInheritanceAdapter<IElement>())
             .registerTypeAdapter(
                     new TypeToken<EnumMap<ContactType, String>>() {
                     }.getType(),
-                    new EnumMapInstanceCreator<ContactType, String>(ContactType.class))
+                    new JsonEnumMapInstanceCreator<ContactType, String>(ContactType.class))
             .registerTypeAdapter(
                     new TypeToken<EnumMap<SectionType, ArrayList<IElement>>>() {
                     }.getType(),
-                    new EnumMapInstanceCreator<SectionType, ArrayList<IElement>>(SectionType.class))
+                    new JsonEnumMapInstanceCreator<SectionType, ArrayList<IElement>>(SectionType.class))
             .create();
 
     public static <T> T read(Reader reader, Class<T> clazz) {

@@ -3,6 +3,7 @@ package com.basejava.webapp.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -37,6 +38,21 @@ public class Element implements IElement, Serializable {
     @Override
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public LocalDate getStartDate() {
+        return null;
+    }
+
+    @Override
+    public LocalDate getEndDate() {
+        return null;
+    }
+
+    @Override
+    public Link getLink() {
+        return null;
     }
 
     @Override

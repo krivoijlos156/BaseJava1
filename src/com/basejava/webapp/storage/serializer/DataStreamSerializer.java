@@ -25,11 +25,15 @@ public class DataStreamSerializer implements StrategyIO {
             }
 
             for (Map.Entry<SectionType, ArrayList<IElement>> entry : r.getSections().entrySet()) {
-                boolean isElement = entry.getValue().get(0).getClass().toString().equals("class com.basejava.webapp.model.Element");
+                boolean isElement = entry.getValue().get(0).getClass().toString()
+                        .equals("class com.basejava.webapp.model.Element");
                 dos.writeBoolean(isElement);
+
                 int listSize = entry.getValue().size();
                 dos.writeInt(listSize);
+
                 dos.writeUTF(entry.getKey().name());
+
                 if (isElement) {
                     for (int i = 0; i < listSize; i++) {
                         dos.writeUTF(entry.getValue().get(i).getTitle());
@@ -37,14 +41,24 @@ public class DataStreamSerializer implements StrategyIO {
                 } else {
                     for (int i = 0; i < listSize; i++) {
                         dos.writeUTF(entry.getValue().get(i).getTitle());
-                        dos.writeUTF(entry.getValue().get(i).getLink().toString());
-                        dos.writeUTF(entry.getValue().get(i).getStartDate().toString());
-                        dos.writeUTF(entry.getValue().get(i).getEndDate().toString());
+                        writeUrl(dos, entry.getValue().get(i).getLink());
+                        writeDate(dos, entry.getValue().get(i).getStartDate());
+                        writeDate(dos, entry.getValue().get(i).getEndDate());
                         dos.writeUTF(entry.getValue().get(i).getDescription());
                     }
                 }
             }
         }
+    }
+
+    private void writeDate(DataOutputStream dos, LocalDate date) throws IOException {
+        dos.writeInt(date.getYear());
+        dos.writeInt(date.getMonthValue());
+    }
+
+    private void writeUrl(DataOutputStream dos, Link link) throws IOException {
+        dos.writeUTF(link.getName());
+        dos.writeUTF(link.getUrl());
     }
 
 
@@ -55,7 +69,6 @@ public class DataStreamSerializer implements StrategyIO {
             String fullName = dis.readUTF();
 
             Resume resume = new Resume(uuid, fullName);
-
             int sizeListCintacts = dis.readInt();
             for (int i = 0; i < sizeListCintacts; i++) {
                 resume.setContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
@@ -73,28 +86,27 @@ public class DataStreamSerializer implements StrategyIO {
                     resume.setSection(sectionName, sectionNew);
                 } else {
                     for (int i = 0; i < sizeElementInSections; i++) {
-                        String title = dis.readUTF();
-
-                        String link = dis.readUTF();
-                        int point=link.indexOf('.');
-//                        String[] linkMas = link.split(".",2);
-                        Link link1 = new Link(link.substring(0,point), link.substring(point+1));
-
-                        String[] startDate = dis.readUTF().split("-");
-                        LocalDate stD = DateUtil.of(Integer.parseInt(startDate[0]), Integer.parseInt(startDate[1]) );
-                        String[] endDate = dis.readUTF().split("-");
-                        LocalDate endD = DateUtil.of(Integer.parseInt(endDate[0]), Integer.parseInt(endDate[1]));
-
-                        DateElement elementNew = new DateElement(title, stD, endD);
-                        elementNew.setLink(link1);
-                        elementNew.setDescription(dis.readUTF());
-                        sectionNew.add(elementNew);
+                        sectionNew.add(createElement(dis.readUTF(),
+                                new Link(dis.readUTF(), dis.readUTF()),
+                                DateUtil.of(dis.readInt(), dis.readInt()),
+                                DateUtil.of(dis.readInt(), dis.readInt()),
+                                dis.readUTF()));
                     }
                     resume.setSection(sectionName, sectionNew);
                 }
             }
-            // TODO implements sections
             return resume;
         }
+    }
+
+    private DateElement createElement(String title,
+                                      Link link,
+                                      LocalDate startDate,
+                                      LocalDate endDate,
+                                      String discription) throws IOException {
+        DateElement elementNew = new DateElement(title, startDate, endDate);
+        elementNew.setLink(link);
+        elementNew.setDescription(discription);
+        return elementNew;
     }
 }

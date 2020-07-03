@@ -1,6 +1,6 @@
 package com.basejava.webapp;
 
-import com.basejava.webapp.exception.SectionType;
+import com.basejava.webapp.model.SectionType;
 
 public class TestSingleton {
     private static TestSingleton instance;

@@ -1,5 +1,6 @@
 package com.basejava.webapp.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -10,7 +11,9 @@ import java.util.Objects;
 import static com.basejava.webapp.util.DateUtil.of;
 import static com.basejava.webapp.util.DateUtil.NOW;
 
-public class Organization {
+public class Organization implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private final Link homePage;
 
     private List<Position> positions = new ArrayList<>();
@@ -45,7 +48,9 @@ public class Organization {
         return "Organization(" + homePage + "," + positions + ')';
     }
 
-    public static class Position {
+
+
+    public static class Position implements Serializable {
         private final LocalDate startDate;
         private final LocalDate endDate;
         private final String title;

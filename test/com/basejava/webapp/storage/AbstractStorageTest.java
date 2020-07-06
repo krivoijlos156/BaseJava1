@@ -11,7 +11,6 @@ import java.util.List;
 
 import static com.basejava.webapp.ResumeTestData.fill;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractStorageTest {
 

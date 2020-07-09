@@ -51,7 +51,7 @@ public class DataStreamSerializer implements StreamSerializer {
                                 writeDate(dos, positions.get(p).getStartDate());
                                 writeDate(dos, positions.get(p).getEndDate());
                                 dos.writeUTF(positions.get(p).getTitle());
-                                dos.writeUTF(isNull(positions.get(p).getDescription()));
+                                dos.writeUTF(getNullSafely(positions.get(p).getDescription()));
                             });
                         });
                         break;
@@ -74,11 +74,11 @@ public class DataStreamSerializer implements StreamSerializer {
 
     private void writeLink(DataOutputStream dos, Link link) throws IOException {
         dos.writeUTF(link.getName());
-        dos.writeUTF(isNull(link.getUrl()));
+        dos.writeUTF(getNullSafely(link.getUrl()));
     }
 
-    private String isNull(String url) {
-        return url != null ? url : "null";
+    private String getNullSafely(String url) {
+        return url != null ? url : "";
     }
 
     private void writeDate(DataOutputStream dos, LocalDate date) throws IOException {

@@ -30,15 +30,18 @@ public class DataStreamSerializer implements StreamSerializer {
             ArrayList<Map.Entry<SectionType, Section>> sectionsList = new ArrayList<>(sections.entrySet());
             writeCollect(dos, sectionsList, i -> {
                 dos.writeUTF(sectionsList.get(i).getKey().name());
-                switch (sectionsList.get(i).getValue().getClass().toString()) {
-                    case "class com.basejava.webapp.model.TextSection":
+                switch (sectionsList.get(i).getKey()) {
+                    case OBJECTIVE:
+                    case PERSONAL:
                         dos.writeUTF(((TextSection) sectionsList.get(i).getValue()).getContent());
                         break;
-                    case "class com.basejava.webapp.model.ListSection":
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
                         List<String> textList = ((ListSection) sectionsList.get(i).getValue()).getItems();
                         writeCollect(dos, textList, j -> dos.writeUTF(textList.get(j)));
                         break;
-                    case "class com.basejava.webapp.model.OrganizationSection":
+                    case EXPERIENCE:
+                    case EDUCATION:
                         List<Organization> organizations =
                                 ((OrganizationSection) sectionsList.get(i).getValue()).getOrganizations();
                         writeCollect(dos, organizations, k -> {
@@ -48,7 +51,7 @@ public class DataStreamSerializer implements StreamSerializer {
                                 writeDate(dos, positions.get(p).getStartDate());
                                 writeDate(dos, positions.get(p).getEndDate());
                                 dos.writeUTF(positions.get(p).getTitle());
-                                dos.writeUTF(positions.get(p).getDescription());
+                                dos.writeUTF(isNull(positions.get(p).getDescription()));
                             });
                         });
                         break;
@@ -71,7 +74,11 @@ public class DataStreamSerializer implements StreamSerializer {
 
     private void writeLink(DataOutputStream dos, Link link) throws IOException {
         dos.writeUTF(link.getName());
-        dos.writeUTF(link.getUrl());
+        dos.writeUTF(isNull(link.getUrl()));
+    }
+
+    private String isNull(String url) {
+        return url != null ? url : "null";
     }
 
     private void writeDate(DataOutputStream dos, LocalDate date) throws IOException {
@@ -109,7 +116,7 @@ public class DataStreamSerializer implements StreamSerializer {
                                     readDate(dis),
                                     readDate(dis),
                                     dis.readUTF(),
-                                    dis.readUTF()
+                                    toNull(dis.readUTF())
                             )));
                             organizationList.add(new Organization(link, positionList));
                         });
@@ -134,8 +141,12 @@ public class DataStreamSerializer implements StreamSerializer {
 
     private Link readLink(DataInputStream dis) throws IOException {
         String name = dis.readUTF();
-        String url = dis.readUTF();
+        String url = toNull(dis.readUTF());
         return new Link(name, url);
+    }
+
+    private String toNull(String s) {
+        return !s.equals("null") ? s : null;
     }
 
     private LocalDate readDate(DataInputStream dis) throws IOException {

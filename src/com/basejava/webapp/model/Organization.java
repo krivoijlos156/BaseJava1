@@ -1,6 +1,8 @@
 package com.basejava.webapp.model;
 
 import com.basejava.webapp.util.LocalDateAdapter;
+import com.basejava.webapp.model.Link;
+
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

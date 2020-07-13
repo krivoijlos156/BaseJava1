@@ -1,27 +1,27 @@
 package com.basejava.webapp;
 
 public class MainDeadLock {
+    final static Object object1 = new Object();
+    final static Object object2 = new Object();
 
     public static void main(String[] args) {
-        new Thread(MainDeadLock::mathodA).start();
-        new Thread(MainDeadLock::mathodB).start();
+        doLock(object1, object2);
+        doLock(object2, object1);
     }
 
-    private static synchronized int mathodA() {
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return +mathodB();
-    }
-
-    private static synchronized int mathodB() {
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return +mathodA();
+    private static void doLock(Object object2, Object object1) {
+        new Thread(() -> {
+            synchronized (object2) {
+                System.out.println(Thread.currentThread().getName() + " take object1");
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException ignored) {
+                }
+                System.out.println(Thread.currentThread().getName() + " waiting object2...");
+                synchronized (object1) {
+                    System.out.println(Thread.currentThread().getName() + "  lock 1 & 2...");
+                }
+            }
+        }).start();
     }
 }

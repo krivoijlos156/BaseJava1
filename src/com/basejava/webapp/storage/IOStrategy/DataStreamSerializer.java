@@ -78,7 +78,7 @@ public class DataStreamSerializer implements StreamSerializer {
     }
 
     private String getNullSafely(String url) {
-        return url != null ? url : "";
+        return url != null ? url : "null";
     }
 
     private void writeDate(DataOutputStream dos, LocalDate date) throws IOException {

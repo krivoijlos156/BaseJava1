@@ -8,69 +8,60 @@ public class MainConcurrency {
     private int counter;
     private static final Object LOCK = new Object();
 
-    public static void main(String[] args) throws InterruptedException {
-        final MainConcurrency mainConcurrency = new MainConcurrency();
-//        System.out.println(Thread.currentThread().getName());
+    public static void main(String[] args) {
+        System.out.println(Thread.currentThread().getName());
 
         Thread thread0 = new Thread() {
             @Override
             public void run() {
-                mainConcurrency.mathodA();
                 System.out.println(getName() + ", " + getState());
+                throw new IllegalStateException();
             }
         };
         thread0.start();
 
         new Thread(new Runnable() {
+
             @Override
             public void run() {
-                mainConcurrency.mathodB();
                 System.out.println(Thread.currentThread().getName() + ", " + Thread.currentThread().getState());
             }
+
+            private void inc() {
+                synchronized (this) {
+//                    counter++;
+                }
+            }
+
         }).start();
-//        System.out.println(thread0.getState());
-    }
 
-    private synchronized int mathodA() {
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        System.out.println(thread0.getState());
+
+        final MainConcurrency mainConcurrency = new MainConcurrency();
+        List<Thread> threads = new ArrayList<>(THREADS_NUMBER);
+
+        for (int i = 0; i < THREADS_NUMBER; i++) {
+            Thread thread = new Thread(() -> {
+                for (int j = 0; j < 100; j++) {
+                    mainConcurrency.inc();
+                }
+            });
+            thread.start();
+            threads.add(thread);
         }
-        return +mathodB();
+
+        threads.forEach(t -> {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        System.out.println(mainConcurrency.counter);
+
     }
 
-    private synchronized int mathodB() {
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return +mathodA();
+    private synchronized void inc() {
+        counter++;
     }
-//        List<Thread> threads = new ArrayList<>(THREADS_NUMBER);
-//
-//        for (int i = 0; i < THREADS_NUMBER; i++) {
-//            Thread thread = new Thread(() -> {
-//                for (int j = 0; j < 100; j++) {
-//                    mainConcurrency.inc();
-//                }
-//            });
-//            thread.start();
-//            threads.add(thread);
-//        }
-//
-//        threads.forEach(t -> {
-//            try {
-//                t.join();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        });
-//        System.out.println(mainConcurrency.counter);
-
-//    }
-    //    private synchronized void inc() {
-//        counter++;
-//    }
 }

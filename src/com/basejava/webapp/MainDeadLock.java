@@ -9,16 +9,16 @@ public class MainDeadLock {
         doLock(object2, object1);
     }
 
-    private static void doLock(Object object2, Object object1) {
+    private static void doLock(Object object1, Object object2) {
         new Thread(() -> {
-            synchronized (object2) {
-                System.out.println(Thread.currentThread().getName() + " take object1");
+            synchronized (object1) {
+                System.out.println(Thread.currentThread().getName() + " take "+ object1);
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException ignored) {
                 }
-                System.out.println(Thread.currentThread().getName() + " waiting object2...");
-                synchronized (object1) {
+                System.out.println(Thread.currentThread().getName() + " waiting "+ object2);
+                synchronized (object2) {
                     System.out.println(Thread.currentThread().getName() + "  lock 1 & 2...");
                 }
             }

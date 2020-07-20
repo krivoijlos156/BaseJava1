@@ -1,5 +1,6 @@
 package com.basejava.webapp.storage;
 
+import com.basejava.webapp.Config;
 import com.basejava.webapp.exception.ExistStorageException;
 import com.basejava.webapp.exception.NotExistStorageException;
 import com.basejava.webapp.model.Resume;
@@ -16,7 +17,7 @@ public abstract class AbstractStorageTest {
 
     protected final Storage storage;
 
-    protected static final File STORAGE_DIR = new File("C:\\Users\\krivo\\IdeaProjects\\BaseJava1\\storage");
+    protected static final File STORAGE_DIR = Config.get().getStorageDir();
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;

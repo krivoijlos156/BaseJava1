@@ -2,7 +2,7 @@ package com.basejava.webapp.storage;
 
 import com.basejava.webapp.exception.NotExistStorageException;
 import com.basejava.webapp.model.Resume;
-import com.basejava.webapp.util.SQLHelper;
+import com.basejava.webapp.sql.SQLHelper;
 
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -25,32 +25,27 @@ public class SQLStorage implements Storage {
     @Override
     public void clear() {
         LOG.info("Clear");
-        sqlHelper.getConnection("DELETE FROM resume", null);
+        sqlHelper.execute("DELETE FROM resume", PreparedStatement::execute);
     }
 
     @Override
     public void update(Resume resume) {
         LOG.info("Update " + resume);
-        sqlHelper.getConnection("UPDATE resume SET full_name=? WHERE uuid=?",
-                ps -> {
-                    setParamNameUuid(ps, resume, 1, 2);
-                    if (ps.executeUpdate() == 0) {
-                        throw new NotExistStorageException(resume.getUuid());
-                    }
-                });
+        sqlHelper.execute("UPDATE resume SET full_name=? WHERE uuid=?",
+                ps -> setParamAndExecute(ps, resume, 1, 2, true));
     }
 
     @Override
     public void save(Resume resume) {
         LOG.info("Save " + resume);
-        sqlHelper.getConnection("INSERT INTO resume (uuid, full_name) VALUES (?,?)",
-                ps -> setParamNameUuid(ps, resume, 2, 1));
+        sqlHelper.execute("INSERT INTO resume (uuid, full_name) VALUES (?,?)",
+                ps -> setParamAndExecute(ps, resume, 2, 1, false));
     }
 
     @Override
     public Resume get(String uuid) {
         LOG.info("Get " + uuid);
-        return sqlHelper.getConnectionAndReturn("SELECT * FROM resume r WHERE r.uuid =?", (ps) -> {
+        return sqlHelper.execute("SELECT * FROM resume r WHERE r.uuid =?", (ps) -> {
             ps.setString(1, uuid);
             ResultSet rs = ifNull(uuid, ps);
             return new Resume(uuid, rs.getString("full_name"));
@@ -60,19 +55,14 @@ public class SQLStorage implements Storage {
     @Override
     public void delete(String uuid) {
         LOG.info("Delete " + uuid);
-        sqlHelper.getConnection("DELETE FROM resume WHERE uuid=?",
-                ps -> {
-                    ps.setString(1, uuid);
-                    if (ps.executeUpdate() == 0) {
-                        throw new NotExistStorageException(uuid);
-                    }
-                });
+        sqlHelper.execute("DELETE FROM resume WHERE uuid=?",
+                ps -> setParamAndExecute(ps, new Resume(uuid, "b"), -1, 1, true));
     }
 
     @Override
     public List<Resume> getAllSorted() {
         LOG.info("Get all sorted");
-        return sqlHelper.getConnectionAndReturn("SELECT * FROM resume", (ps) -> {
+        return sqlHelper.execute("SELECT * FROM resume", (ps) -> {
             List<Resume> list = new ArrayList<>();
             ResultSet rs = ifNull(null, ps);
             while (rs.next()) {
@@ -86,16 +76,32 @@ public class SQLStorage implements Storage {
     @Override
     public int size() {
         LOG.info("Get size");
-        return sqlHelper.getConnectionAndReturn("SELECT count(*) FROM resume", (ps) -> {
+        return sqlHelper.execute("SELECT count(*) FROM resume", (ps) -> {
             ResultSet rs = ifNull(null, ps);
             return rs.getInt(1);
         });
     }
 
-    private void setParamNameUuid(PreparedStatement ps, Resume resume, int first, int second) throws SQLException {
-        ps.setString(first, resume.getFullName());
-        ps.setString(second, resume.getUuid());
+    private Object setParamAndExecute(PreparedStatement ps, Resume resume,
+                                      int indexName, int indexUuid,
+                                      boolean checkExist) throws SQLException {
+        if (indexName == -1) {
+            ps.setString(indexUuid, resume.getUuid());
+        } else if (indexUuid == -1) {
+            ps.setString(indexName, resume.getFullName());
+        } else {
+            ps.setString(indexName, resume.getFullName());
+            ps.setString(indexUuid, resume.getUuid());
+        }
+        ps.execute();
+        if (checkExist) {
+            if (ps.executeUpdate() == 0) {
+                throw new NotExistStorageException(resume.getUuid());
+            }
+        }
+        return null;
     }
+
 
     private ResultSet ifNull(String uuid, PreparedStatement ps) throws SQLException {
         ResultSet rs = ps.executeQuery();

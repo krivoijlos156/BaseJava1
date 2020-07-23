@@ -9,10 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 
@@ -35,13 +32,11 @@ public class SQLStorage implements Storage {
         LOG.info("Update " + resume);
         sqlHelper.transactionalExecute(conn -> {
                     try (PreparedStatement ps = conn.prepareStatement("UPDATE resume SET full_name=? WHERE uuid=?")) {
-                        setParamAndExecute(ps, resume, 1, 2, true);
+                        setParamCheckUpdate(ps, resume.getUuid(), resume.getFullName(), resume.getUuid());
                     }
                     try (PreparedStatement ps = conn.prepareStatement("UPDATE contact SET value=? WHERE resume_uuid=? and type=?")) {
                         for (Map.Entry<ContactType, String> e : resume.getContacts().entrySet()) {
-                            ps.setString(2, resume.getUuid());
-                            ps.setString(3, e.getKey().name());
-                            ps.setString(1, e.getValue());
+                            setParameters(ps, e.getValue(), resume.getUuid(), e.getKey().name());
                             ps.addBatch();
                         }
                         ps.executeBatch();
@@ -56,13 +51,12 @@ public class SQLStorage implements Storage {
         LOG.info("Save " + resume);
         sqlHelper.transactionalExecute(conn -> {
                     try (PreparedStatement ps = conn.prepareStatement("INSERT INTO resume (uuid, full_name) VALUES (?,?)")) {
-                        setParamAndExecute(ps, resume, 2, 1, false);
+                        setParameters(ps, resume.getUuid(), resume.getFullName());
+                        ps.execute();
                     }
                     try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)")) {
                         for (Map.Entry<ContactType, String> e : resume.getContacts().entrySet()) {
-                            ps.setString(1, resume.getUuid());
-                            ps.setString(2, e.getKey().name());
-                            ps.setString(3, e.getValue());
+                            setParameters(ps, resume.getUuid(), e.getKey().name(), e.getValue());
                             ps.addBatch();
                         }
                         ps.executeBatch();
@@ -82,7 +76,7 @@ public class SQLStorage implements Storage {
                         "     WHERE r.uuid =? ",
                 (ps) -> {
                     ps.setString(1, uuid);
-                    ResultSet rs = ifNull(uuid, ps);
+                    ResultSet rs = executeCheckQuery(uuid, ps);
                     Resume r = new Resume(uuid, rs.getString("full_name"));
                     do {
                         String value = rs.getString("value");
@@ -97,7 +91,7 @@ public class SQLStorage implements Storage {
     public void delete(String uuid) {
         LOG.info("Delete " + uuid);
         sqlHelper.execute("DELETE FROM resume WHERE uuid=?",
-                ps -> setParamAndExecute(ps, new Resume(uuid, "b"), -1, 1, true));
+                ps -> setParamCheckUpdate(ps, uuid, uuid));
     }
 
     @Override
@@ -135,33 +129,28 @@ public class SQLStorage implements Storage {
     public int size() {
         LOG.info("Get size");
         return sqlHelper.execute("SELECT count(*) FROM resume", (ps) -> {
-            ResultSet rs = ifNull(null, ps);
+            ResultSet rs = executeCheckQuery(null, ps);
             return rs.getInt(1);
         });
     }
 
-    private Object setParamAndExecute(PreparedStatement ps, Resume resume,
-                                      int indexName, int indexUuid,
-                                      boolean checkExist) throws SQLException {
-        if (indexName == -1) {
-            ps.setString(indexUuid, resume.getUuid());
-        } else if (indexUuid == -1) {
-            ps.setString(indexName, resume.getFullName());
-        } else {
-            ps.setString(indexName, resume.getFullName());
-            ps.setString(indexUuid, resume.getUuid());
+    private void setParameters(PreparedStatement ps, String... param) throws SQLException {
+        for (int i = 0; i < param.length; i++) {
+            ps.setString(i + 1, param[i]);
         }
+    }
+
+    private Object setParamCheckUpdate(PreparedStatement ps, String uuid, String... param) throws SQLException {
+        this.setParameters(ps, param);
         ps.execute();
-        if (checkExist) {
-            if (ps.executeUpdate() == 0) {
-                throw new NotExistStorageException(resume.getUuid());
-            }
+        if (ps.executeUpdate() == 0) {
+            throw new NotExistStorageException(uuid);
         }
         return null;
     }
 
 
-    private ResultSet ifNull(String uuid, PreparedStatement ps) throws SQLException {
+    private ResultSet executeCheckQuery(String uuid, PreparedStatement ps) throws SQLException {
         ResultSet rs = ps.executeQuery();
         if (!rs.next()) {
             throw new NotExistStorageException(uuid);

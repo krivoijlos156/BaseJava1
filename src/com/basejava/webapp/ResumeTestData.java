@@ -9,9 +9,9 @@ public class ResumeTestData {
 
     public static Resume fill(Resume r) {
 
-//        r.addContact(ContactType.MAIL, "mail1@ya.ru");
-//        r.addContact(ContactType.PHONE, "11111");
-//        r.addContact(ContactType.SKYPE, "skype.skype");
+        r.addContact(ContactType.MAIL, "mail1@ya.ru");
+        r.addContact(ContactType.PHONE, "11111");
+        r.addContact(ContactType.SKYPE, "skype.skype");
 //
 //        r.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
 //        r.addSection(SectionType.PERSONAL, new TextSection("Personal data"));

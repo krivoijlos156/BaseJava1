@@ -9,13 +9,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
 
 public class SQLStorage implements Storage {
-    public final SQLHelper sqlHelper;
+    private final SQLHelper sqlHelper;
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
     public SQLStorage(String dbUrl, String dbUser, String dbPassword) {
@@ -62,13 +61,12 @@ public class SQLStorage implements Storage {
     @Override
     public List<Resume> getAllSorted() {
         LOG.info("Get all sorted");
-        return sqlHelper.execute("SELECT * FROM resume", (ps) -> {
+        return sqlHelper.execute("SELECT * FROM resume ORDER BY full_name, uuid", (ps) -> {
             List<Resume> list = new ArrayList<>();
-            ResultSet rs = ifNull(null, ps);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
             }
-            Collections.sort(list);
             return list;
         });
     }

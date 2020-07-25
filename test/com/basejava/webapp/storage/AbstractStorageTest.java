@@ -3,12 +3,13 @@ package com.basejava.webapp.storage;
 import com.basejava.webapp.Config;
 import com.basejava.webapp.exception.ExistStorageException;
 import com.basejava.webapp.exception.NotExistStorageException;
+import com.basejava.webapp.model.ContactType;
 import com.basejava.webapp.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +31,6 @@ public abstract class AbstractStorageTest {
     private static final String UUID_2 = UUID.randomUUID().toString();
     private static final String UUID_3 = UUID.randomUUID().toString();
     private static final String UUID_4 = UUID.randomUUID().toString();
-    private static final String UUID_5 = UUID.randomUUID().toString();
 
     private static final Resume R1 = new Resume(UUID_1, "Name1");
     private static final Resume R2 = new Resume(UUID_2, "Name2");
@@ -104,11 +104,15 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAllSorted() {
-        Resume expected = fill(new Resume(UUID_4, "Name0"));
-        storage.save(expected);
+        List<Resume> expectedList = Arrays.asList(
+                fill(new Resume(UUID_4, "Name0")),
+                fill(new Resume(UUID_1, "Name1")),
+                fill(new Resume(UUID_2, "Name2")),
+                fill(new Resume(UUID_3, "Name3")));
+        storage.save(fill(new Resume(UUID_4, "Name0")));
         assertStorageSize(4);
-        List<Resume> list = storage.getAllSorted();
-        assertEquals(expected.getFullName(), list.get(0).getFullName());
+        List<Resume> actualList = storage.getAllSorted();
+        assertEquals(expectedList, actualList);
     }
 
     @Test

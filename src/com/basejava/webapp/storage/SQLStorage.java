@@ -67,10 +67,10 @@ public class SQLStorage implements Storage {
                         "     WHERE r.uuid =? ",
                 (ps) -> {
                     ps.setString(1, uuid);
-                    ResultSet rs = executeCheckQuery(uuid, ps);
+                    ResultSet rs = checkExistence(uuid, ps);
                     Resume r = new Resume(uuid, rs.getString("full_name"));
                     do {
-                        getContactFromDB(rs, r);
+                        addContactDB(rs, r);
                     } while (rs.next());
                     return r;
                 });
@@ -102,14 +102,15 @@ public class SQLStorage implements Storage {
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY)) {
                 ResultSet rs = ps.executeQuery();
-                int i = 0;
-                while (rs.next()) {
-                    String uuid = list.get(i).getUuid();
-                    if (uuid.equals(rs.getString("resume_uuid"))) {
-                        getContactFromDB(rs, list.get(i));
-                    } else {
-                        i++;
-                        rs.previous();
+                for (Resume r : list) {
+                    while (rs.next()) {
+                        String uuid = r.getUuid();
+                        if (uuid.equals(rs.getString("resume_uuid"))) {
+                            addContactDB(rs, r);
+                        } else {
+                            rs.previous();
+                            break;
+                        }
                     }
                 }
             }
@@ -121,12 +122,12 @@ public class SQLStorage implements Storage {
     public int size() {
         LOG.info("Get size");
         return sqlHelper.execute("SELECT count(*) FROM resume", (ps) -> {
-            ResultSet rs = executeCheckQuery(null, ps);
+            ResultSet rs = checkExistence(null, ps);
             return rs.getInt(1);
         });
     }
 
-    private void getContactFromDB(ResultSet rs, Resume r) throws SQLException {
+    private void addContactDB(ResultSet rs, Resume r) throws SQLException {
         String value = rs.getString("value");
         ContactType type = ContactType.valueOf(rs.getString("type"));
         r.addContact(type, value);
@@ -157,7 +158,7 @@ public class SQLStorage implements Storage {
     }
 
 
-    private ResultSet executeCheckQuery(String uuid, PreparedStatement ps) throws SQLException {
+    private ResultSet checkExistence(String uuid, PreparedStatement ps) throws SQLException {
         ResultSet rs = ps.executeQuery();
         if (!rs.next()) {
             throw new NotExistStorageException(uuid);

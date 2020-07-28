@@ -34,4 +34,15 @@ public class ResumeTestData {
 //                        new Organization("Organization12", "http://Organization12.ru")));
         return r;
     }
+
+    public static Resume fillA(Resume r) {
+        return r;
+    }
+
+    public static Resume fillB(Resume r) {
+        r.addContact(ContactType.MAIL, "mail1@ya.ru");
+        r.addContact(ContactType.GITHUB, "gitH");
+        r.addContact(ContactType.HOME_PAGE, "HomeDrakon");
+        return r;
+    }
 }

@@ -3,7 +3,6 @@ package com.basejava.webapp.storage;
 import com.basejava.webapp.Config;
 import com.basejava.webapp.exception.ExistStorageException;
 import com.basejava.webapp.exception.NotExistStorageException;
-import com.basejava.webapp.model.ContactType;
 import com.basejava.webapp.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import static com.basejava.webapp.ResumeTestData.fill;
+import static com.basejava.webapp.ResumeTestData.*;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
@@ -32,17 +31,18 @@ public abstract class AbstractStorageTest {
     private static final String UUID_3 = UUID.randomUUID().toString();
     private static final String UUID_4 = UUID.randomUUID().toString();
 
-    private static final Resume R1 = new Resume(UUID_1, "Name1");
-    private static final Resume R2 = new Resume(UUID_2, "Name2");
-    private static final Resume R3 = new Resume(UUID_3, "Name3");
-    private static final Resume R4 = new Resume(UUID_4, "Name4");
+    private static final Resume R1 = fillB(new Resume(UUID_1, "Name1"));
+    private static final Resume R2 = fill(new Resume(UUID_2, "Name2"));
+    private static final Resume R3 = fillA(new Resume(UUID_3, "Name3"));
+    private static final Resume R4 = fill(new Resume(UUID_4, "Name0"));
+    private static final Resume R2_NEW = fill(new Resume(UUID_2, "NEW"));
 
     @Before
     public void setUp() {
         storage.clear();
-        storage.save(fill(R1));
-        storage.save(fill(R2));
-        storage.save(fill(R3));
+        storage.save(R2);
+        storage.save(R1);
+        storage.save(R3);
     }
 
     @Test
@@ -53,36 +53,30 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume expected = fill(new Resume(UUID_2, "Name9"));
-        storage.update(expected);
-        assertEquals(expected, storage.get(UUID_2));
+        storage.update(R2_NEW);
+        assertEquals(R2_NEW, storage.get(UUID_2));
     }
 
     @Test(expected = NotExistStorageException.class)
     public void updateNotExist() {
-        Resume resume = new Resume("uuid5", "Gosha");
-        storage.update(resume);
+        storage.update(R4);
     }
 
     @Test
     public void save() {
-        Resume expected = fill(new Resume(UUID_4, "Name9"));
-        storage.save(expected);
-        assertEquals(expected, storage.get(UUID_4));
+        storage.save(R4);
+        assertGet(R4);
         assertStorageSize(4);
     }
 
     @Test(expected = ExistStorageException.class)
     public void saveAlreadyExist() {
-        Resume resume = fill(new Resume(UUID_2, "Name9"));
-        storage.save(resume);
+        storage.save(R2_NEW);
     }
 
     @Test
     public void get() {
-        Resume expected = fill(new Resume(UUID_1, "Name1"));
-        Resume actual = storage.get(UUID_1);
-        assertEquals(expected, actual);
+        assertGet(R1);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -104,13 +98,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAllSorted() {
-        List<Resume> expectedList = Arrays.asList(
-                fill(new Resume(UUID_4, "Name0")),
-                fill(new Resume(UUID_1, "Name1")),
-                fill(new Resume(UUID_2, "Name2")),
-                fill(new Resume(UUID_3, "Name3")));
-        storage.save(fill(new Resume(UUID_4, "Name0")));
-        assertStorageSize(4);
+        List<Resume> expectedList = Arrays.asList(R1, R2, R3);
         List<Resume> actualList = storage.getAllSorted();
         assertEquals(expectedList, actualList);
     }
@@ -122,5 +110,9 @@ public abstract class AbstractStorageTest {
 
     private void assertStorageSize(int i) {
         assertEquals(i, storage.size());
+    }
+
+    private void assertGet(Resume r) {
+        assertEquals(r, storage.get(r.getUuid()));
     }
 }

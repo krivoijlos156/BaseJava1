@@ -14,3 +14,13 @@ create table if not exists contact
 
 create unique index contact_uuid_uindex on contact (resume_uuid, type);
 
+create table if not exists section
+(
+    id          serial   not null constraint section_pk primary key,
+    resume_uuid char(36) not null references resume (uuid) on delete cascade,
+    type        text     not null,
+    value       text     not null
+);
+
+create unique index section_uuid_uindex on section (resume_uuid, type_s);
+

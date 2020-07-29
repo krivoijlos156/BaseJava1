@@ -12,11 +12,11 @@ public class ResumeTestData {
         r.addContact(ContactType.MAIL, "mail1@ya.ru");
         r.addContact(ContactType.PHONE, "11111");
         r.addContact(ContactType.SKYPE, "skype.skype");
-//
-//        r.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
-//        r.addSection(SectionType.PERSONAL, new TextSection("Personal data"));
-//        r.addSection(SectionType.ACHIEVEMENT, new ListSection("Achivment11", "Achivment12", "Achivment13"));
-//        r.addSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "JavaScript"));
+
+        r.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
+        r.addSection(SectionType.PERSONAL, new TextSection("Personal data"));
+        r.addSection(SectionType.ACHIEVEMENT, new ListSection("Achivment11", "Achivment12", "Achivment13"));
+        r.addSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "JavaScript"));
 //        r.addSection(SectionType.EXPERIENCE,
 //                new OrganizationSection(
 //                        new Organization("Organization11", "http://Organization11.ru",

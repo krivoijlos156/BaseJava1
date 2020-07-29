@@ -95,15 +95,22 @@ public class SQLStorage implements Storage {
         return sqlHelper.transactionalExecute(conn -> {
             try (PreparedStatement ps = conn.prepareStatement("" +
                     "    SELECT * FROM resume r " +
-                    " LEFT JOIN contact c " +
-                    "        ON r.uuid = c.resume_uuid " +
-                    " LEFT JOIN section s " +
-                    "        ON r.uuid = s.resume_uuid " +
                     "ORDER BY r.full_name, r.uuid")) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     String uuid = rs.getString("uuid");
                     map.putIfAbsent(uuid, new Resume(uuid, rs.getString("full_name")));
+                }
+            }
+            try (PreparedStatement ps = conn.prepareStatement("" +
+                    "    SELECT * FROM resume r " +
+                    " LEFT JOIN contact c " +
+                    "        ON r.uuid = c.resume_uuid " +
+                    " LEFT JOIN section s " +
+                    "        ON r.uuid = s.resume_uuid ")) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    String uuid = rs.getString("uuid");
                     addContactDB(rs, map.get(uuid));
                     addSectionDB(rs, map.get(uuid));
                 }

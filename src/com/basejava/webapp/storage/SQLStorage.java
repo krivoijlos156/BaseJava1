@@ -6,10 +6,9 @@ import com.basejava.webapp.model.Resume;
 import com.basejava.webapp.sql.SQLHelper;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 
 public class SQLStorage implements Storage {
@@ -86,35 +85,20 @@ public class SQLStorage implements Storage {
     @Override
     public List<Resume> getAllSorted() {
         LOG.info("Get all sorted");
-        List<Resume> list = new ArrayList<>();
+        Map<String, Resume> map = new HashMap<>();
         return sqlHelper.transactionalExecute(conn -> {
-            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume ORDER BY full_name, uuid")) {
+            try (PreparedStatement ps = conn.prepareStatement("" +
+                    "    SELECT * FROM resume r " +
+                    " LEFT JOIN contact c " +
+                    "        ON r.uuid = c.resume_uuid ")) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
-                    list.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
+                    String uuid = rs.getString("uuid");
+                    map.putIfAbsent(uuid, new Resume(uuid, rs.getString("full_name")));
+                    addContactDB(rs, map.get(uuid));
                 }
             }
-            try (PreparedStatement ps = conn.prepareStatement("" +
-                            "    SELECT * FROM resume r " +
-                            " LEFT JOIN contact c " +
-                            "        ON r.uuid = c.resume_uuid " +
-                            "ORDER BY r.full_name, r.uuid",
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_READ_ONLY)) {
-                ResultSet rs = ps.executeQuery();
-                for (Resume r : list) {
-                    while (rs.next()) {
-                        String uuid = r.getUuid();
-                        if (uuid.equals(rs.getString("resume_uuid"))) {
-                            addContactDB(rs, r);
-                        } else {
-                            rs.previous();
-                            break;
-                        }
-                    }
-                }
-            }
-            return list;
+            return map.values().stream().sorted().collect(Collectors.toList());
         });
     }
 
@@ -129,6 +113,7 @@ public class SQLStorage implements Storage {
 
     private void addContactDB(ResultSet rs, Resume r) throws SQLException {
         String value = rs.getString("value");
+        if (value == null) { return; }
         ContactType type = ContactType.valueOf(rs.getString("type"));
         r.addContact(type, value);
     }

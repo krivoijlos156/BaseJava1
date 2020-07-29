@@ -33,7 +33,7 @@ public abstract class AbstractStorageTest {
 
     private static final Resume R1 = fillB(new Resume(UUID_1, "Name1"));
     private static final Resume R2 = fill(new Resume(UUID_2, "Name2"));
-    private static final Resume R3 = fillA(new Resume(UUID_3, "Name3"));
+    private static final Resume R3 = new Resume(UUID_3, "Name3");
     private static final Resume R4 = fill(new Resume(UUID_4, "Name0"));
     private static final Resume R2_NEW = fill(new Resume(UUID_2, "NEW"));
 
@@ -77,6 +77,8 @@ public abstract class AbstractStorageTest {
     @Test
     public void get() {
         assertGet(R1);
+        assertGet(R2);
+        assertGet(R3);
     }
 
     @Test(expected = NotExistStorageException.class)

@@ -9,11 +9,12 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class Config {
-    private static final File PROPS = new File(".\\config\\resumes.properties");
+    private static final File PROPS = new File(getRoot()+"\\config\\resumes.properties");
+
     private static final Config INSTANCE = new Config();
+
     private final File storageDir;
     private final SQLStorage sqlStorage;
-
     public static Config get() {
         return INSTANCE;
     }
@@ -27,6 +28,14 @@ public class Config {
         } catch (IOException e) {
             throw new IllegalStateException("Invalid config file " + PROPS.getAbsolutePath());
         }
+    }
+
+    private static String getRoot() {
+        String root = System.getProperty("rootHome");
+        if (root == null) {
+            root = ".";
+        }
+        return root;
     }
 
     public File getStorageDir() {

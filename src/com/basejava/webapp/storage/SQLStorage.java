@@ -110,13 +110,20 @@ public class SQLStorage implements Storage {
             try (PreparedStatement ps = conn.prepareStatement("" +
                     "    SELECT * FROM resume r " +
                     " LEFT JOIN contact c " +
-                    "        ON r.uuid = c.resume_uuid " +
+                    "        ON r.uuid = c.resume_uuid ")) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    String uuid = rs.getString("uuid");
+                    addContactDB(rs, map.get(uuid));
+                }
+            }
+            try (PreparedStatement ps = conn.prepareStatement("" +
+                    "    SELECT * FROM resume r " +
                     " LEFT JOIN section s " +
                     "        ON r.uuid = s.resume_uuid ")) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     String uuid = rs.getString("uuid");
-                    addContactDB(rs, map.get(uuid));
                     addSectionDB(rs, map.get(uuid));
                 }
             }

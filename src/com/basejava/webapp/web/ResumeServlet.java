@@ -3,6 +3,7 @@ package com.basejava.webapp.web;
 import com.basejava.webapp.Config;
 import com.basejava.webapp.storage.Storage;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,8 +12,13 @@ import java.io.IOException;
 
 public class ResumeServlet extends HttpServlet {
 
-    private Storage storage = Config.get().getSqlStorage();
+    private Storage storage;
 
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        storage=Config.get().getSqlStorage();
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 

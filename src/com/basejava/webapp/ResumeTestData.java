@@ -39,6 +39,7 @@ public class ResumeTestData {
         r.addContact(ContactType.MAIL, "mail1@ya.ru");
         r.addContact(ContactType.GITHUB, "gitH");
         r.addContact(ContactType.HOME_PAGE, "HomeDrakon");
+        r.addSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "JavaScript"));
         return r;
     }
 }

@@ -9,12 +9,13 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class Config {
-    private static final File PROPS = new File(getRoot()+"\\config\\resumes.properties");
+    private static final File PROPS = new File(getRoot() + "\\config\\resumes.properties");
 
     private static final Config INSTANCE = new Config();
 
     private final File storageDir;
     private final SQLStorage sqlStorage;
+
     public static Config get() {
         return INSTANCE;
     }
@@ -32,10 +33,7 @@ public class Config {
 
     private static String getRoot() {
         String root = System.getProperty("rootHome");
-        if (root == null) {
-            root = ".";
-        }
-        return root;
+        return root == null ? "." : root;
     }
 
     public File getStorageDir() {

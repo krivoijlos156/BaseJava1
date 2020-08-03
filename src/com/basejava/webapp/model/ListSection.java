@@ -28,7 +28,12 @@ public class ListSection extends Section {
 
     @Override
     public String toString() {
-        return items.toString();
+        return String.join(", \n", items);
+    }
+
+    @Override
+    public String toHtml(Section section) {
+        return section == null ? "" : String.join(", <br/>", items);
     }
 
     @Override

@@ -42,6 +42,11 @@ public class OrganizationSection extends Section {
     }
 
     @Override
+    public String toHtml(Section section) {
+        return section == null ? "" : organizations.toString();
+    }
+
+    @Override
     public String toString() {
         return organizations.toString();
     }

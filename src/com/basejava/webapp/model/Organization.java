@@ -132,7 +132,7 @@ public class Organization implements Serializable {
 
         @Override
         public String toString() {
-            return "Position(" + startDate + ',' + endDate + ',' + title + ',' + description + ')';
+            return "from " + startDate + " to " + endDate + '\n' + title + '\n' + description;
         }
     }
 }

@@ -11,7 +11,7 @@
 <body>
 <jsp:include page="fragments/header.jsp"/>
 <section>
-    <h2>${resume.fullName}&nbsp;<a href="resume?uuid=${resume.uuid}&action=edit"><img src="img/pencil.png"></a></h2>
+    <h2>${resume.fullName}&nbsp;<a href="resume?uuid=${resume.uuid}&action=edit">edit</a></h2>
     <p>
         <c:forEach var="contactEntry" items="${resume.contacts}">
             <jsp:useBean id="contactEntry"
@@ -19,15 +19,26 @@
                 <%=contactEntry.getKey().toHtml(contactEntry.getValue())%><br/>
         </c:forEach>
     <p>
-    <p>
-        <c:forEach var="sectionEntry" items="${resume.sections}">
-            <jsp:useBean id="sectionEntry"
-                         type="java.util.Map.Entry<com.basejava.webapp.model.SectionType,
+        <c:if test="${resume.sections!='{}'}">
+        <table border="1" cellpadding="8" cellspacing="0">
+            <tr>
+                <th>Раздел</th>
+                <th></th>
+            </tr>
+            <c:forEach var="sectionEntry" items="${resume.sections}">
+                <jsp:useBean id="sectionEntry"
+                             type="java.util.Map.Entry<com.basejava.webapp.model.SectionType,
                          com.basejava.webapp.model.Section>"/>
-                <%=sectionEntry.getKey().getTitle() + ":"%> <br/>
-                <%=sectionEntry.getValue().toHtml(sectionEntry.getValue())%> <br/>
-            <br/>
-        </c:forEach>
+                <c:set var="type" value="${sectionEntry.key}"/>
+            <tr>
+                <td width="150"><%=sectionEntry.getKey().getTitle() + ":"%>
+                </td>
+                <td width="450">
+                    <%=sectionEntry.getValue().toHtml(sectionEntry.getValue())%> <br/>
+                </td>
+            </tr>
+            </c:forEach>
+            </c:if>
     <p>
 </section>
 <jsp:include page="fragments/footer.jsp"/>

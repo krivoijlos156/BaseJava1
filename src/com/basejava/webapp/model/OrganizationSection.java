@@ -50,7 +50,7 @@ public class OrganizationSection extends Section {
             String pos = org.getPositions().stream()
                     .map(Organization.Position::toString)
                     .collect(Collectors.joining(" <br/>", "{", "}"));
-            result.append(link).append(" <br/>").append(pos);
+            result.append(link).append(" <br/>").append(pos).append(" <br/>");
         }
         if (section == null) {
             return "";

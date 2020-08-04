@@ -20,26 +20,20 @@
         </c:forEach>
     <p>
         <c:if test="${resume.sections!='{}'}">
-        <table border="1" cellpadding="8" cellspacing="0">
-            <tr>
-                <th>Раздел</th>
-                <th></th>
-            </tr>
-            <c:forEach var="sectionEntry" items="${resume.sections}">
-                <jsp:useBean id="sectionEntry"
-                             type="java.util.Map.Entry<com.basejava.webapp.model.SectionType,
+    <table cellpadding="2">
+        <c:forEach var="sectionEntry" items="${resume.sections}">
+            <jsp:useBean id="sectionEntry"
+                         type="java.util.Map.Entry<com.basejava.webapp.model.SectionType,
                          com.basejava.webapp.model.Section>"/>
-                <c:set var="type" value="${sectionEntry.key}"/>
             <tr>
-                <td width="150"><%=sectionEntry.getKey().getTitle() + ":"%>
-                </td>
-                <td width="450">
+                <td><h3><%=sectionEntry.getKey().getTitle() + ":"%></h3></td>
+                <td>
                     <%=sectionEntry.getValue().toHtml(sectionEntry.getValue())%> <br/>
                 </td>
             </tr>
-            </c:forEach>
-            </c:if>
-    <p>
+        </c:forEach>
+        </c:if>
+    </table>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>

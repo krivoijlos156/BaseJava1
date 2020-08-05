@@ -11,7 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Arrays;
+
+import static com.basejava.webapp.util.DateUtil.toLocalDate;
 
 public class ResumeServlet extends HttpServlet {
 
@@ -58,11 +61,19 @@ public class ResumeServlet extends HttpServlet {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        r.addSection(type, new ListSection(Arrays.asList(value.split(", "))));
+                        r.addSection(type, new ListSection(Arrays.asList(value)));
                         break;
                     case EXPERIENCE:
-                        break;
                     case EDUCATION:
+                        String link = request.getParameter("link");
+                        LocalDate dateSt = toLocalDate(request.getParameter("dateSt"));
+                        LocalDate dateEnd = toLocalDate(request.getParameter("dateEnd"));
+                        String title = request.getParameter("title");
+                        String description = request.getParameter("description");
+                        r.addSection(type,
+                                new OrganizationSection(Arrays.asList(
+                                        new Organization(value, link,
+                                                new Organization.Position(dateSt, dateEnd, title, description)))));
                         break;
                     default:
                         throw new IllegalStateException("Unexpected value: " + type);

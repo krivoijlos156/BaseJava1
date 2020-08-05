@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 
+
 public class DateUtil {
 
     public static final LocalDate NOW = LocalDate.of(3000, 1, 1);
@@ -12,8 +13,15 @@ public class DateUtil {
         return LocalDate.of(year, month, 1);
     }
 
-    public static String toHtml(LocalDate start, LocalDate end) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d, LLLL, YY");
-        return start.format(formatter) + "-" + end.format(formatter);
+    final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM, YYYY");
+
+    public static String toHtml(LocalDate start) {
+        return start.format(formatter);
+    }
+
+    public static LocalDate toLocalDate(String date) {
+        int month=Integer.parseInt(date.substring(0,2));
+        int year=Integer.parseInt(date.substring(4));
+        return of(year,Month.of(month));
     }
 }

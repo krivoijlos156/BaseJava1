@@ -35,7 +35,7 @@
             <c:choose>
                 <c:when test="${type=='PERSONAL'||type=='OBJECTIVE'}">
                     <tr>
-                        <td colspan="2"><%=sectionEntry.getValue()%>
+                        <td colspan="2">${section}
                         </td>
                     </tr>
                 </c:when>
@@ -64,7 +64,8 @@
                                          type="com.basejava.webapp.model.Organization.Position"/>
                             <tr>
                                 <td width="15%" style="vertical-align: top">
-                                    <%=toHtml(position.getStartDate(), position.getEndDate())%>
+                                    <%=toHtml(position.getEndDate())%> -
+                                    <%=toHtml(position.getEndDate())%>
                                 </td>
                                 <td>
                                     <b>${position.title}</b><br/>

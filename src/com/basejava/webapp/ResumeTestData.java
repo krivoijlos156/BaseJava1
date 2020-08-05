@@ -43,7 +43,7 @@ public class ResumeTestData {
         r.addSection(SectionType.EDUCATION,
                 new OrganizationSection(
                         new Organization("Coursera", "https://www.coursera.org/course/progfun"),
-                        new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/",
+                        new Organization("Университет механики и оптики", "http://www.ifmo.ru/",
                                 new Organization.Position(1993, Month.JANUARY, 1996, Month.JULY, "Аспирантура (программист С, С++)", null),
                                 new Organization.Position(1987, Month.SEPTEMBER, 1993, Month.JULY, "Инженер (программист Fortran, C)", "IT facultet"))));
         return r;

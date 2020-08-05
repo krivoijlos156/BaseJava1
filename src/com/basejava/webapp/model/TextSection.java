@@ -36,11 +36,6 @@ public class TextSection extends Section {
     }
 
     @Override
-    public String toHtml(Section section) {
-        return section == null ? "" : this.toString();
-    }
-
-    @Override
     public String toString() {
         return content;
     }

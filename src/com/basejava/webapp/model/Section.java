@@ -6,5 +6,4 @@ import java.io.Serializable;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 abstract public class Section implements Serializable {
-    public abstract String toHtml(Section section);
 }

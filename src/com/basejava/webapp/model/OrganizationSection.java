@@ -3,7 +3,6 @@ package com.basejava.webapp.model;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class OrganizationSection extends Section {
     private static final long serialVersionUID = 1L;
@@ -40,24 +39,6 @@ public class OrganizationSection extends Section {
     @Override
     public int hashCode() {
         return organizations.hashCode();
-    }
-
-    @Override
-    public String toHtml(Section section) {
-        StringBuilder result = null;
-        for (Organization org : organizations) {
-            String link = org.getHomePage().toString();
-            String pos = org.getPositions().stream()
-                    .map(Organization.Position::toString)
-                    .collect(Collectors.joining(" <br/>", "{", "}"));
-            result.append(link).append(" <br/>").append(pos).append(" <br/>");
-        }
-        if (section == null) {
-            return "";
-        } else {
-            assert result != null;
-            return result.toString();
-        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.basejava.webapp.web;
 
 import com.basejava.webapp.Config;
+import com.basejava.webapp.exception.NotExistStorageException;
 import com.basejava.webapp.model.*;
 import com.basejava.webapp.storage.Storage;
 
@@ -26,7 +27,18 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
-        Resume r = storage.get(uuid);
+        try {
+            Resume r = storage.get(uuid);
+            setDetals(request, response, fullName, r);
+            storage.update(r);
+        } catch (NotExistStorageException e) {
+            Resume r = new Resume(uuid);
+            setDetals(request, response, fullName, r);
+            storage.save(r);
+        }
+    }
+
+    private void setDetals(HttpServletRequest request, HttpServletResponse response, String fullName, Resume r) throws IOException {
         r.setFullName(fullName);
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
@@ -59,7 +71,6 @@ public class ResumeServlet extends HttpServlet {
                 r.getContacts().remove(type);
             }
         }
-        storage.update(r);
         response.sendRedirect("resume");
     }
 
@@ -77,6 +88,9 @@ public class ResumeServlet extends HttpServlet {
                 storage.delete(uuid);
                 response.sendRedirect("resume");
                 return;
+            case "add":
+                r = new Resume("Enter your name");
+                break;
             case "view":
             case "edit":
                 r = storage.get(uuid);

@@ -2,6 +2,7 @@ package com.basejava.webapp.util;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 
 public class DateUtil {
 
@@ -9,5 +10,10 @@ public class DateUtil {
 
     public static LocalDate of(int year, Month month) {
         return LocalDate.of(year, month, 1);
+    }
+
+    public static String toHtml(LocalDate start, LocalDate end) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d, LLLL, YY");
+        return start.format(formatter) + "-" + end.format(formatter);
     }
 }

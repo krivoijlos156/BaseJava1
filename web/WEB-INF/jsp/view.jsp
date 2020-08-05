@@ -1,4 +1,5 @@
 <%@ page import="com.basejava.webapp.model.Section" %>
+<%@ page import="static com.basejava.webapp.util.DateUtil.toHtml" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -55,13 +56,15 @@
                     <c:forEach var="organization" items="${section.organizations}">
                         <tr>
                             <td colspan="2">
-                                    ${organization.homePage}
+                                <h4><a href="${organization.homePage.url}"> ${organization.homePage.name}</a></h4>
                             </td>
                         </tr>
                         <c:forEach var="position" items="${organization.positions}">
+                            <jsp:useBean id="position"
+                                         type="com.basejava.webapp.model.Organization.Position"/>
                             <tr>
                                 <td width="15%" style="vertical-align: top">
-                                        ${position.startDate.toString() + '-' + position.endDate.toString()}
+                                    <%=toHtml(position.getStartDate(), position.getEndDate())%>
                                 </td>
                                 <td>
                                     <b>${position.title}</b><br/>

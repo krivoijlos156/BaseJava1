@@ -12,7 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import static com.basejava.webapp.ResumeTestData.*;
+import static com.basejava.webapp.ResumeTestData.fill;
+import static com.basejava.webapp.ResumeTestData.fillB;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
@@ -32,10 +33,10 @@ public abstract class AbstractStorageTest {
     private static final String UUID_4 = UUID.randomUUID().toString();
 
     private static final Resume R1 = fillB(new Resume(UUID_1, "Name1"));
-    private static final Resume R2 = fillC(new Resume(UUID_2, "Name2"));
+    private static final Resume R2 = fill(new Resume(UUID_2, "Name2"));
     private static final Resume R3 = new Resume(UUID_3, "Name3");
-    private static final Resume R4 = fillC(new Resume(UUID_4, "Name0"));
-    private static final Resume R2_NEW = fillC(new Resume(UUID_2, "NEW"));
+    private static final Resume R4 = fill(new Resume(UUID_4, "Name0"));
+    private static final Resume R2_NEW = fill(new Resume(UUID_2, "NEW"));
 
     @Before
     public void setUp() {

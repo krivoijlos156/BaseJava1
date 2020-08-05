@@ -1,7 +1,10 @@
 package com.basejava.webapp.storage;
 
 import com.basejava.webapp.exception.NotExistStorageException;
-import com.basejava.webapp.model.*;
+import com.basejava.webapp.model.ContactType;
+import com.basejava.webapp.model.Resume;
+import com.basejava.webapp.model.Section;
+import com.basejava.webapp.model.SectionType;
 import com.basejava.webapp.sql.SQLHelper;
 import com.basejava.webapp.util.JsonParser;
 
@@ -11,8 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import static com.basejava.webapp.model.SectionType.valueOf;
 
 
 public class SQLStorage implements Storage {
@@ -165,7 +166,6 @@ public class SQLStorage implements Storage {
         try (PreparedStatement ps = conn.prepareStatement("INSERT INTO section (resume_uuid, type_s, value_s) VALUES (?,?,?)")) {
             for (Map.Entry<SectionType, Section> e : resume.getSections().entrySet()) {
                 setParameters(ps, resume.getUuid(), e.getKey().name(), JsonParser.write(e.getValue(), Section.class));
-
                 ps.addBatch();
             }
             ps.executeBatch();

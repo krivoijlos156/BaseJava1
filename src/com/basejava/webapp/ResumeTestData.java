@@ -6,35 +6,6 @@ import java.time.Month;
 
 public class ResumeTestData {
 
-
-    public static Resume fill(Resume r) {
-
-        r.addContact(ContactType.MAIL, "mail1@ya.ru");
-        r.addContact(ContactType.PHONE, "11111");
-        r.addContact(ContactType.SKYPE, "skype.skype");
-
-        r.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
-        r.addSection(SectionType.PERSONAL, new TextSection("Personal data"));
-        r.addSection(SectionType.ACHIEVEMENT, new ListSection("Achivment11", "Achivment12", "Achivment13"));
-        r.addSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "JavaScript"));
-//        r.addSection(SectionType.EXPERIENCE,
-//                new OrganizationSection(
-//                        new Organization("Organization11", "http://Organization11.ru",
-//                                new Organization.Position(2005, Month.JANUARY, "position1", "content1"),
-//                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2"))));
-//        r.addSection(SectionType.EXPERIENCE,
-//                new OrganizationSection(
-//                        new Organization("Organization2", "http://Organization2.ru",
-//                                new Organization.Position(2015, Month.JANUARY, "position1", "content1"))));
-//        r.addSection(SectionType.EDUCATION,
-//                new OrganizationSection(
-//                        new Organization("Institute", null,
-//                                new Organization.Position(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null),
-//                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
-//                        new Organization("Organization12", "http://Organization12.ru")));
-        return r;
-    }
-
     public static Resume fillB(Resume r) {
         r.addContact(ContactType.MAIL, "mail1@ya.ru");
         r.addContact(ContactType.GITHUB, "gitH");
@@ -43,7 +14,7 @@ public class ResumeTestData {
         return r;
     }
 
-    public static Resume fillC(Resume r) {
+    public static Resume fill(Resume r) {
         r.addContact(ContactType.MAIL, "mail1@ya.ru");
         r.addContact(ContactType.GITHUB, "gitH");
         r.addContact(ContactType.HOME_PAGE, "HomeDrakon");
@@ -59,21 +30,22 @@ public class ResumeTestData {
                 "JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2",
                 "Version control: Subversion, Git, Mercury, ClearCase, Perforce",
                 "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle"));
-//        r.addSection(SectionType.EXPERIENCE,
-//                new OrganizationSection(
-//                        new Organization("Organization11", "http://Organization11.ru",
-//                                new Organization.Position(2005, Month.JANUARY, "position1", "content1"),
-//                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2"))));
-//        r.addSection(SectionType.EXPERIENCE,
-//                new OrganizationSection(
-//                        new Organization("Organization2", "http://Organization2.ru",
-//                                new Organization.Position(2015, Month.JANUARY, "position1", "content1"))));
-//        r.addSection(SectionType.EDUCATION,
-//                new OrganizationSection(
-//                        new Organization("Institute", null,
-//                                new Organization.Position(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null),
-//                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
-//                        new Organization("Organization12", "http://Organization12.ru")));
+        r.addSection(SectionType.EXPERIENCE,
+                new OrganizationSection(
+                        new Organization("Java Online Projects", "http://javaops.ru/",
+                                new Organization.Position(2013, Month.OCTOBER, "Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок."),
+                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2")),
+                        new Organization("RIT Center", null,
+                                new Organization.Position(2012, Month.DECEMBER, 2014, Month.OCTOBER, "Java архитектор", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")),
+                        new Organization("Wrike", "https://www.wrike.com/",
+                                new Organization.Position(2010, Month.NOVEMBER, 2016, Month.JANUARY, "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))
+                ));
+        r.addSection(SectionType.EDUCATION,
+                new OrganizationSection(
+                        new Organization("Coursera", "https://www.coursera.org/course/progfun"),
+                        new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/",
+                                new Organization.Position(1993, Month.JANUARY, 1996, Month.JULY, "Аспирантура (программист С, С++)", null),
+                                new Organization.Position(1987, Month.SEPTEMBER, 1993, Month.JULY, "Инженер (программист Fortran, C)", "IT facultet"))));
         return r;
     }
 }

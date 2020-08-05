@@ -11,7 +11,6 @@
 </head>
 <body>
 <jsp:include page="fragments/header.jsp"/>
-<table>
     <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
         <input type="hidden" name="uuid" value="${resume.uuid}">
         <dl>
@@ -29,7 +28,7 @@
         <table border="1" cellpadding="8" cellspacing="0">
             <tr>
                 <th width="150">Раздел</th>
-                <th width="450"></th>
+                <th width="400"></th>
             </tr>
             <c:forEach var="type" items="<%=SectionType.values()%>">
                 <c:set var="section" value="${resume.getSection(type)}"/>
@@ -47,7 +46,9 @@
                                     <input type="text" name="${type.name()}" size=100 value="">
                                 </c:if>
                                 <c:forEach var="item" items="${section.items}">
-                                    <input type="text" name="${type.name()}" size=100 value="${item}">
+                                    <textarea name="${type.name()}" cols="100" rows="4">
+                                            ${item}
+                                    </textarea>
                                 </c:forEach>
                             </td>
                         </c:when>

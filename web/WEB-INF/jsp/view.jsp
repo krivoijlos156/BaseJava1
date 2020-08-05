@@ -25,12 +25,53 @@
             <jsp:useBean id="sectionEntry"
                          type="java.util.Map.Entry<com.basejava.webapp.model.SectionType,
                          com.basejava.webapp.model.Section>"/>
+            <c:set var="section" value="${sectionEntry.value}"></c:set>
+            <c:set var="type" value="${sectionEntry.key}"></c:set>
             <tr>
-                <td><h3><%=sectionEntry.getKey().getTitle() + ":"%></h3></td>
-                <td>
-                    <%=sectionEntry.getValue().toHtml(sectionEntry.getValue())%> <br/>
-                </td>
+                <td><h3><%=sectionEntry.getKey().getTitle() + ":"%>
+                </h3></td>
             </tr>
+            <c:choose>
+                <c:when test="${type=='PERSONAL'||type=='OBJECTIVE'}">
+                    <tr>
+                        <td colspan="2"><%=sectionEntry.getValue()%>
+                        </td>
+                    </tr>
+                </c:when>
+                <c:when test="${type=='ACHIEVEMENT'||type=='QUALIFICATIONS'}">
+                    <tr>
+                        <td colspan="2">
+                            <ul>
+                                <c:forEach var="item" items="${section.items}">
+                                    <li>
+                                            ${item}
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </td>
+                    </tr>
+                </c:when>
+                <c:when test="${type=='EXPERIENCE'||type=='EDUCATION'}">
+                    <c:forEach var="organization" items="${section.organizations}">
+                        <tr>
+                            <td colspan="2">
+                                    ${organization.homePage}
+                            </td>
+                        </tr>
+                        <c:forEach var="position" items="${organization.positions}">
+                            <tr>
+                                <td width="15%" style="vertical-align: top">
+                                        ${position.startDate.toString() + '-' + position.endDate.toString()}
+                                </td>
+                                <td>
+                                    <b>${position.title}</b><br/>
+                                        ${position.description}
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </c:forEach>
+                </c:when>
+            </c:choose>
         </c:forEach>
         </c:if>
     </table>

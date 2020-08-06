@@ -57,6 +57,10 @@ public class ResumeServlet extends HttpServlet {
                 switch (type) {
                     case PERSONAL:
                     case OBJECTIVE:
+                        String text = request.getParameter(type.name()+"text");
+                        if (text != null && text.trim().length() != 0) {
+                            value += text;
+                        }
                         r.addSection(type, new TextSection(value));
                         break;
                     case ACHIEVEMENT:
@@ -65,6 +69,9 @@ public class ResumeServlet extends HttpServlet {
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
+                        if (value.equals("name")) {
+                            break;
+                        }
                         String link = request.getParameter("link");
                         LocalDate dateSt = toLocalDate(request.getParameter("dateSt"));
                         LocalDate dateEnd = toLocalDate(request.getParameter("dateEnd"));

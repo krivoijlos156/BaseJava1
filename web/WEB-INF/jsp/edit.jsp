@@ -40,39 +40,27 @@
                             <input name="${type.name()}" size=100 value="${section.toString()}">
                         </td>
                     </tr>
+                    <c:if test="${section!=null}">
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input name="${type.name()}text" size=100 value="">
+                            </td>
+                        </tr>
+                    </c:if>
                 </c:when>
                 <c:when test="${type=='ACHIEVEMENT'||type=='QUALIFICATIONS'}">
                     <tr>
                         <td></td>
                         <td>
-                            <c:if test="${section.items==null}">
-                                <textarea name="${type.name()}" cols="100" rows="4"></textarea>
-                            </c:if>
                             <c:forEach var="item" items="${section.items}">
                                 <textarea name="${type.name()}" cols="100" rows="4"> ${item}</textarea>
                             </c:forEach>
+                            <textarea name="${type.name()}" cols="100" rows="4"></textarea>
                         </td>
                     </tr>
                 </c:when>
                 <c:when test="${type=='EXPERIENCE'||type=='EDUCATION'}">
-                    <c:if test="${section.organizations==null}">
-                        <tr>
-                            <td>
-                                <input name="${type.name()}" size=40 value="">
-                                <input name="link" size=40 value="">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input name="dateSt" size=20 value="">
-                                <input name="dateEnd" size=20 value="">
-                            </td>
-                            <td>
-                                <input name="title" size=100 value="">
-                                <textarea name="description" cols="100" rows="3"></textarea>
-                            </td>
-                        </tr>
-                    </c:if>
                     <c:forEach var="organization" items="${section.organizations}">
                         <jsp:useBean id="organization" type="com.basejava.webapp.model.Organization"/>
                         <tr>
@@ -96,6 +84,22 @@
                             </tr>
                         </c:forEach>
                     </c:forEach>
+                    <tr>
+                        <td>
+                            <input name="${type.name()}" size=40 value="name">
+                            <input name="link" size=40 value="url">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input name="dateSt" size=20 value="from">
+                            <input name="dateEnd" size=20 value="to">
+                        </td>
+                        <td>
+                            <input name="title" size=100 value="title">
+                            <textarea name="description" cols="100" rows="3">description</textarea>
+                        </td>
+                    </tr>
                 </c:when>
             </c:choose>
             </tr>

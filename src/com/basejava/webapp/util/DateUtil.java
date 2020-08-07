@@ -20,8 +20,11 @@ public class DateUtil {
     }
 
     public static LocalDate toLocalDate(String date) {
-        int month=Integer.parseInt(date.substring(0,2));
-        int year=Integer.parseInt(date.substring(4));
-        return of(year,Month.of(month));
+        if (date.length() == 8) {
+            int month = Integer.parseInt(date.substring(0, 2));
+            int year = Integer.parseInt(date.substring(4));
+            return of(year, Month.of(month));
+        }
+        return LocalDate.of(0, 0, 0);
     }
 }

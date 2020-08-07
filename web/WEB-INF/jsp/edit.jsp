@@ -37,14 +37,14 @@
                     <tr>
                         <td></td>
                         <td>
-                            <input name="${type.name()}" size=100 value="${section.toString()}">
+                            <input name="${type}" size=100 value="${section.toString()}">
                         </td>
                     </tr>
                     <c:if test="${section!=null}">
                         <tr>
                             <td></td>
                             <td>
-                                <input name="${type.name()}text" size=100 value="">
+                                <input name="${type}text" size=100 value="">
                             </td>
                         </tr>
                     </c:if>
@@ -53,51 +53,51 @@
                     <tr>
                         <td></td>
                         <td>
-                            <c:forEach var="item" items="${section.items}">
-                                <textarea name="${type.name()}" cols="100" rows="4"> ${item}</textarea>
+                            <c:forEach var="item" items="${section.items}" varStatus="count">
+                                <textarea name="${type}_${count.index}" cols="100" rows="4"> ${item}</textarea>
                             </c:forEach>
-                            <textarea name="${type.name()}" cols="100" rows="4"></textarea>
+                            <textarea name="${type}" cols="100" rows="4"></textarea>
                         </td>
                     </tr>
                 </c:when>
                 <c:when test="${type=='EXPERIENCE'||type=='EDUCATION'}">
-                    <c:forEach var="organization" items="${section.organizations}">
+                    <c:forEach var="organization" items="${section.organizations}" varStatus="count">
                         <jsp:useBean id="organization" type="com.basejava.webapp.model.Organization"/>
                         <tr>
                             <td>
-                                <dd><input name="${type.name()}" size=40 value="${organization.homePage.name}">
-                                    <input name="link" size=40 value="${organization.homePage.url}">
+                                <dd><input name="${type}_name_${count.index}" size=40 value="${organization.homePage.name}">
+                                    <input name="${type}_url_${count.index}" size=40 value="${organization.homePage.url}">
                                 </dd>
                             </td>
                         </tr>
-                        <c:forEach var="position" items="${organization.positions}">
+                        <c:forEach var="position" items="${organization.positions}" varStatus="count1">
                             <jsp:useBean id="position" type="com.basejava.webapp.model.Organization.Position"/>
                             <tr>
                                 <td>
-                                    <input name="dateSt" size=20 value="<%=toHtml(position.getStartDate())%>">
-                                    <input name="dateEnd" size=20 value="<%=toHtml(position.getEndDate())%>">
+                                    <input name="${count.index}${type}_dateSt_${count1.index}" size=20 value="<%=toHtml(position.getStartDate())%>">
+                                    <input name="${count.index}${type}_dateEnd_${count1.index}" size=20 value="<%=toHtml(position.getEndDate())%>">
                                 </td>
                                 <td>
-                                    <input name="title" size="60" value="${position.title}">
-                                    <textarea name="description" cols="100" rows="3"> ${position.description}</textarea>
+                                    <input name="${count.index}${type}_title_${count1.index}" size="60" value="${position.title}">
+                                    <textarea name="${count.index}${type}_description_${count1.index}" cols="100" rows="3"> ${position.description}</textarea>
                                 </td>
                             </tr>
                         </c:forEach>
                     </c:forEach>
                     <tr>
                         <td>
-                            <input name="${type.name()}" size=40 value="name">
-                            <input name="link" size=40 value="url">
+                            <input name="${type}" size=40 value="">
+                            <input name="${type}_url" size=40 value="">
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <input name="dateSt" size=20 value="from">
-                            <input name="dateEnd" size=20 value="to">
+                            <input name="${type}_dateSt" size=20 value="">
+                            <input name="${type}_dateEnd" size=20 value="">
                         </td>
                         <td>
-                            <input name="title" size=100 value="title">
-                            <textarea name="description" cols="100" rows="3">description</textarea>
+                            <input name="${type}_title" size=100 value="">
+                            <textarea name="${type}_description" cols="100" rows="3"></textarea>
                         </td>
                     </tr>
                 </c:when>

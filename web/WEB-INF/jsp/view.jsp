@@ -64,7 +64,7 @@
                                          type="com.basejava.webapp.model.Organization.Position"/>
                             <tr>
                                 <td width="15%" style="vertical-align: top">
-                                    <%=toHtml(position.getEndDate())%> -
+                                    <%=toHtml(position.getStartDate())%> -
                                     <%=toHtml(position.getEndDate())%>
                                 </td>
                                 <td>
